@@ -18,30 +18,34 @@ const mongoUrl = `mongodb://${ mongoHost }:${ mongoPort }/${ dbName }`;
 function router() {
     adminRouter.route('/insertMonuments')
         .get(async (req: any, res: any) => {
-            // const monuments = await OpenDataAccess.getMonuments();
-            const readFile = util.promisify(fs.readFile);
-            const monumentsStr = await readFile(path.join(__dirname, "../../assets/monuments.json"), "utf8");
-            const monuments: Array<any> = JSON.parse(monumentsStr);
-            // debug(monuments);
-
-            (async function mongo(dbUrl, monuments) {
-                let client;
-                try {
-                    client = await MongoClient.connect(dbUrl);
-                    debug('Connected correctly to server');
-                    const db = client.db(dbName);
-                    const response = await db.collection('monuments').insertMany(monuments);
-                    debug('Data inserted correctly!');
-                } catch (err) {
-                    debug(err.stack);
-                }
-                client.close();
-            }(mongoUrl, monuments));
+            const monuments = await getMonumentsFromFile();
+            await insertMonuments(mongoUrl, monuments);
             res.send("Loading finished!");
         });
     return adminRouter;
 }
 
+
+async function getMonumentsFromFile(): Promise<Array<any>> {
+    const readFile = util.promisify(fs.readFile);
+    const monumentsStr = await readFile(path.join(__dirname, "../../assets/monuments.json"), "utf8");
+    const monuments: Array<any> = JSON.parse(monumentsStr);
+    return monuments;
+}
+
+async function insertMonuments(dbUrl: string, monuments: Array<any>) : Promise<void>{
+    let client;
+    try {
+        client = await MongoClient.connect(dbUrl);
+        debug('Connected correctly to server');
+        const db = client.db(dbName);
+        const response = await db.collection('monuments').insertMany(monuments);
+        debug('Data inserted correctly!');
+    } catch (err) {
+        debug(err.stack);
+    }
+    client.close();
+};
 
 
 export default router;
