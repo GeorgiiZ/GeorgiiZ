@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import adminRouter from './src/routes/adminRoutes';
+import monumentsRouter from './src/routes/monumentsRoutes';
 
 
 const morgan = require('morgan');
@@ -24,6 +25,7 @@ app.get('/', (req: any, res: any) => {
 
 
 app.use("/admin", adminRouter());
+app.use("/monuments", monumentsRouter());
 
 app.listen(port, () => {
     debug('Express server listening on port ' + port);
