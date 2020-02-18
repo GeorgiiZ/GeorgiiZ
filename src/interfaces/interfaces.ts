@@ -1,5 +1,9 @@
 interface DBInput {
-    insertMany(items : Array<any>, collectionName: string): Promise<void>;
+    insertMany(items : Array<any>, collection: string): Promise<void>;
+}
+
+interface DBReader {
+    findDocuments(collection: string, limit?: number): Promise<any>;
 }
 
 interface FileReader {
@@ -8,5 +12,6 @@ interface FileReader {
 
 export {
     DBInput,
-    FileReader
+    FileReader,
+    DBReader
 }

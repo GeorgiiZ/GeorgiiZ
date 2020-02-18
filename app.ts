@@ -23,7 +23,6 @@ app.get('/', (req: any, res: any) => {
     res.send('hello world');
 });
 
-
 app.use("/admin", adminRouter());
 app.use("/monuments", monumentsRouter());
 

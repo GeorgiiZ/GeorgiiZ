@@ -9,17 +9,27 @@ async function importMonuments(dbManager: DBInput, fileReader: FileReader){
         const filePath = path.join(__dirname, `../../assets/${ i }.json`);
         const monuments = await fileReader.getMonuments(filePath);
         const monumentsNew = mapMonuments(monuments);
-        await dbManager.insertMany(monumentsNew, 'monuments_1');
+        await dbManager.insertMany(monumentsNew, 'monuments');
     }
 }
 
 function mapMonuments(monuments: Array<any>) {
     return monuments.map((monument: any) => {
-        const { nativeId, nativeName, data: { general: { region } } } = monument;
+        const {
+            nativeId,
+            nativeName,
+            data: {
+                general: {
+                    region,
+                    photo
+                }
+            }
+        } = monument;
         return {
             nativeId,
             nativeName,
-            region
+            region,
+            photo
         }
     });
 }
