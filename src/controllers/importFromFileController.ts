@@ -1,10 +1,18 @@
 import path from 'path';
 import { DBInput, FileReader } from '../interfaces/interfaces';
-
+import MongoManager from "../classes/MongoManager";
+import TextFileManager from "../classes/TextFileManager";
 
 const debug = require('debug')('app:importFromFileController');
 
-async function importMonuments(dbManager: DBInput, fileReader: FileReader){
+async function importMonuments(req: any, res: any) {
+    let mongoManager = new MongoManager();
+    let textFileManager = new TextFileManager();
+    await importMonumentsHelper(mongoManager, textFileManager);
+    res.send("Loading finished!");
+}
+
+async function importMonumentsHelper(dbManager: DBInput, fileReader: FileReader){
     for(let i = 1; i < 16; i++ ){
         const filePath = path.join(__dirname, `../../assets/${ i }.json`);
         const monuments = await fileReader.getMonuments(filePath);
@@ -33,7 +41,5 @@ function mapMonuments(monuments: Array<any>) {
         }
     });
 }
-
-
 
 export { importMonuments }
