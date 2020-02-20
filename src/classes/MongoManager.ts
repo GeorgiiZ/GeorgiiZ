@@ -24,13 +24,14 @@ export default class MongoManager implements DBInput, DBReader{
         client.close();
     };
 
-    async findDocuments(collection: string, filter: Object = {}, limit: number = 0) : Promise<Array<any> | undefined>{
+    async findDocuments(collection: string, filter:any, limit: number = 0) : Promise<Array<any> | undefined>{
         let client;
         try {
             client = await MongoClient.connect(mongoUrl);
             debug('Connected correctly to server');
             const db = client.db(dbName);
             const col = await db.collection( collection );
+            debug(filter);
             const result = await col.find(filter).limit(limit).toArray();
             return result;
         } catch (err) {
