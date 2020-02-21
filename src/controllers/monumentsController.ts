@@ -19,16 +19,17 @@ async function getMonumentById(req: any, res: any){
 }
 
 async function getMonuments(req: any, res: any){
-    let { limit, filter } = req.query;
+    let { limit, filter: filterRequest  } = req.query;
+    debug(filterRequest);
     let dbManager = new MongoManager();
-    const queryFilter = QueryFilterFactory.setupFilter(filter);
-    const monuments = await getMonumentsHelper(dbManager, queryFilter, +limit);
+    const filter = QueryFilterFactory.setupFilter(filterRequest);
+    debug(filter);
+    const monuments = await getMonumentsHelper(dbManager, filter, +limit);
     res.send( JSON.stringify(monuments) );
 }
 
-async function getMonumentsHelper(dbManager: DBReader, filter: QueryFilter, limit: number): Promise<Array<any>>{
-    filter.getFilter()
-    const monuments = await dbManager.findDocuments('monuments', filter, limit);
+async function getMonumentsHelper(dbManager: DBReader, filter: object|undefined, limit: number): Promise<Array<any>>{
+    const monuments = await dbManager.findDocuments('monuments', {"region.value": "Краснодарский край"}, limit);
     return monuments;
 }
 

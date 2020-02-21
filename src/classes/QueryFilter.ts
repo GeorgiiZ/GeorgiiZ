@@ -4,12 +4,8 @@ abstract  class QueryFilter{
 
 class RegionFilter extends QueryFilter{
 
-    getFilter(value: string){
-        return {
-            region: {
-                value: value
-            }
-        };
+    getFilter(value: string): object{
+        return { "region.value": value };
     }
 }
 

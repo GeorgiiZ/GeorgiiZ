@@ -31,7 +31,6 @@ export default class MongoManager implements DBInput, DBReader{
             debug('Connected correctly to server');
             const db = client.db(dbName);
             const col = await db.collection( collection );
-            debug(filter);
             const result = await col.find(filter).limit(limit).toArray();
             return result;
         } catch (err) {
