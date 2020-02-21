@@ -3,7 +3,7 @@ interface DBInput {
 }
 
 interface DBReader {
-    findDocuments(collection: string, filter: Object, limit: number): Promise<any>;
+    findDocuments(collection: string, filter: Object|undefined, limit: number): Promise<any>;
 }
 
 interface FileReader {

@@ -29,7 +29,7 @@ async function getMonuments(req: any, res: any){
 }
 
 async function getMonumentsHelper(dbManager: DBReader, filter: object|undefined, limit: number): Promise<Array<any>>{
-    const monuments = await dbManager.findDocuments('monuments', {"region.value": "Краснодарский край"}, limit);
+    const monuments = await dbManager.findDocuments('monuments', filter, limit);
     return monuments;
 }
 

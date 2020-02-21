@@ -12,13 +12,11 @@ class QueryFilterFactory{
         //     const curFilter = queryFilter?.getFilter(filteringValue);
         //     return Object.assign(accumulator, curFilter);
         // });
-        debug(filterRequest);
         const result = filter?.getFilter(filterRequest['region']);
-        debug(result);
         return result;
     }
 
-    private static setupFilterHelper(filterType: string): QueryFilter|null {
+    private static setupFilterHelper(filterType: string): QueryFilter | null {
         switch(filterType) {
             case 'region':
                 return new RegionFilter();
