@@ -5,15 +5,16 @@ const debug = require('debug')('app:QueryFilterFactory');
 class QueryFilterFactory{
 
     static setupFilter(filterRequest: any): Object | undefined{
-        const filter = this.setupFilterHelper('region');
-        //     Object.keys(filterRequest).reduce((accumulator, filterType) => {
-        //     const queryFilter = this.setupFilterHelper(filterType);
-        //     const filteringValue = filterRequest[filterType];
-        //     const curFilter = queryFilter?.getFilter(filteringValue);
-        //     return Object.assign(accumulator, curFilter);
-        // });
-        const result = filter?.getFilter(filterRequest['region']);
-        return result;
+        if(!filterRequest){
+            return {}
+        }
+        let filter = {};
+        Object.keys(filterRequest).forEach((filtertype: string) => {
+            const curFilter = this.setupFilterHelper(filtertype);
+            const value = filterRequest[filtertype];
+            filter = Object.assign(filter, curFilter?.getFilter(value));
+        });
+        return filter;
     }
 
     private static setupFilterHelper(filterType: string): QueryFilter | null {
