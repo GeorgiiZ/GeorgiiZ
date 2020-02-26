@@ -10,7 +10,7 @@ async function getMonumentById(req: any, res: any){
     try{
         const { id } = req.params;
         const monument = await MonumentsService.getMonumentById(id);
-        res.send(monument);
+        res.json(monument);
     }
     catch (err) {
         debug(err);
@@ -20,12 +20,12 @@ async function getMonumentById(req: any, res: any){
 
 async function getMonuments(req: any, res: any){
     let { limit, filter: filterRequest  } = req.query;
-    debug(filterRequest);
+    // debug(filterRequest);
     let dbManager = new MongoManager();
     const filter = QueryFilterFactory.setupFilter(filterRequest);
-    debug(filter);
+    // debug(filter);
     const monuments = await getMonumentsHelper(dbManager, filter, +limit);
-    res.send( JSON.stringify(monuments) );
+    res.json(monuments);
 }
 
 async function getMonumentsHelper(dbManager: DBReader, filter: object|undefined, limit: number): Promise<Array<any>>{
