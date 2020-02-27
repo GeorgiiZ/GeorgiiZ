@@ -10,7 +10,7 @@ const dbName = mongoConfig.db || 'myDB';
 const mongoUrl = `mongodb://${ mongoHost }:${ mongoPort }/${ dbName }`;
 
 export default class MongoManager implements DBInput, DBReader{
-    async insertMany(items: Array<any>, collection: string): Promise<void> {
+    async insertMany(collection: string, items: Array<any>): Promise<void> {
         let client;
         try {
             client = await MongoClient.connect(mongoUrl);
@@ -24,7 +24,7 @@ export default class MongoManager implements DBInput, DBReader{
         client.close();
     };
 
-    async findDocuments(collection: string, filter:any, limit: number = 0) : Promise<Array<any> | undefined>{
+    async findMany(collection: string, filter:any, limit: number = 0) : Promise<Array<any> | undefined>{
         let client;
         try {
             client = await MongoClient.connect(mongoUrl);
@@ -38,4 +38,19 @@ export default class MongoManager implements DBInput, DBReader{
         }
         client.close();
     };
+
+    async findOne(collection: string, filter: any){
+        let client;
+        try {
+            client = await MongoClient.connect(mongoUrl);
+            debug('Connected correctly to server');
+            const db = client.db(dbName);
+            const col = await db.collection( collection );
+            const result = await col.findOne(filter).toArray();
+            return result;
+        } catch (err) {
+            debug(err.stack);
+        }
+        client.close();
+    }
 }

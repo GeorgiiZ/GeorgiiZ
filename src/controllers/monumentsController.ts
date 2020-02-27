@@ -3,37 +3,35 @@ import MongoManager from '../classes/MongoManager';
 const debug = require('debug')('app:monumentsController');
 import { DBReader } from '../interfaces/interfaces';
 import { QueryFilterFactory } from '../classes/QueryFilterFactory';
-import { QueryFilter } from '../classes/QueryFilter';
 
+export default class MonumentsController{
+    readonly dbManager: DBReader;
 
-async function getMonumentById(req: any, res: any){
-    try{
-        const { id } = req.params;
-        const monument = await MonumentsService.getMonumentById(id);
-        res.json(monument);
+    constructor(dbManager: DBReader){
+        this.dbManager = dbManager;
     }
-    catch (err) {
-        debug(err);
-        throw err;
+
+    async getMonumentById(id: string){
+        try {
+            const monument = await MonumentsService.getMonumentById(id);
+            return monument;
+        }
+        catch (err) {
+            debug(err);
+            throw err;
+        }
     }
-}
 
-async function getMonuments(req: any, res: any){
-    let { limit, filter: filterRequest  } = req.query;
-    // debug(filterRequest);
-    let dbManager = new MongoManager();
-    const filter = QueryFilterFactory.setupFilter(filterRequest);
-    // debug(filter);
-    const monuments = await getMonumentsHelper(dbManager, filter, +limit);
-    res.json(monuments);
-}
+    async getMonuments(limit: any, filterRequest: any){
+        // debug(filterRequest);
+        const filter = QueryFilterFactory.setupFilter(filterRequest);
+        // debug(filter);
+        const monuments = await this.getMonumentsHelper(filter, +limit);
+        return monuments;
+    }
 
-async function getMonumentsHelper(dbManager: DBReader, filter: object|undefined, limit: number): Promise<Array<any>>{
-    const monuments = await dbManager.findDocuments('monuments', filter, limit);
-    return monuments;
-}
-
-export {
-    getMonumentById,
-    getMonuments
+    async getMonumentsHelper(filter: object|undefined, limit: number): Promise<Array<any>>{
+        const monuments = await this.dbManager.findMany('monuments', filter, limit);
+        return monuments;
+    }
 }

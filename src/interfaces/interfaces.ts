@@ -1,9 +1,11 @@
 interface DBInput {
-    insertMany(items : Array<any>, collection: string): Promise<void>;
+    insertMany(collection: string, items : Array<any>): Promise<void>;
 }
 
 interface DBReader {
-    findDocuments(collection: string, filter: Object|undefined, limit: number): Promise<any>;
+    findMany(collection: string, filter: Object | undefined, limit: number): Promise<any>;
+
+    findOne(collection: string, filter: Object | undefined): Promise<any>;
 }
 
 interface FileReader {
