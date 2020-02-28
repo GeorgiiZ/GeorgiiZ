@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import adminRouter from './src/routes/adminRoutes';
 import monumentsRouter from './src/routes/monumentsRoutes';
 import MongoManager from "./src/classes/MongoManager";
+import { passportConfig } from './src/config/passport';
 
 
 const morgan = require('morgan');
@@ -26,6 +27,8 @@ app.get('/', (req: any, res: any) => {
 });
 
 const dbManager = new MongoManager();
+
+passportConfig(app, dbManager);
 
 app.use("/admin", adminRouter(dbManager));
 app.use("/monuments", monumentsRouter(dbManager));

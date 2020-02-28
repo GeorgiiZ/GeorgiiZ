@@ -1,4 +1,4 @@
-import passport from 'passport';
+const passport = require('passport');
 import { localStrategy } from'./strategies/local.strategy';
 import { DBReader } from "../interfaces/interfaces";
 
