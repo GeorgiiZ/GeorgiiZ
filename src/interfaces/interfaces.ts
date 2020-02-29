@@ -1,5 +1,7 @@
 interface DBInput {
     insertMany(collection: string, items : Array<any>): Promise<void>;
+
+    insertOne(collection: string, item: any): Promise<any>;
 }
 
 interface DBReader {

@@ -16,13 +16,28 @@ export default class MongoManager implements DBInput, DBReader{
             client = await MongoClient.connect(mongoUrl);
             debug('Connected correctly to server');
             const db = client.db(dbName);
-            await db.collection( collection ).insertMany(items);
+             await db.collection( collection ).insertMany(items);
             debug('Data inserted correctly!');
         } catch (err) {
             debug(err.stack);
         }
         client.close();
     };
+
+    async insertOne(collection: string, item: any): Promise<any> {
+        let client;
+        try {
+            client = await MongoClient.connect(mongoUrl);
+            debug('Connected correctly to server');
+            const db = client.db(dbName);
+            const results = await db.collection( collection ).insertOne(item);
+            debug('Data inserted correctly!');
+            return results.ops[0];
+        } catch (err) {
+            debug(err.stack);
+        }
+        client.close();
+    }
 
     async findMany(collection: string, filter:any, limit: number = 0) : Promise<Array<any> | undefined>{
         let client;
