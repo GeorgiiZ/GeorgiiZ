@@ -11,9 +11,8 @@ function localStrategy(dbManager: DBReader) {
             passwordField: 'password'
         }, async (username: any, password: any, done: any) => {
             debug('Connected correctly to server');
-            debug(username, password);
-            const user = await dbManager.findOne('users', { user: username });
-            debug(user);
+            const user = await dbManager.findOne('users', { name: username });
+            debug(passport);
             if (user.password === password) {
                 done(null, user);
             } else {

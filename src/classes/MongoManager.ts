@@ -55,13 +55,15 @@ export default class MongoManager implements DBInput, DBReader{
     };
 
     async findOne(collection: string, filter: any){
+        debug(filter);
         let client;
         try {
             client = await MongoClient.connect(mongoUrl);
             debug('Connected correctly to server');
             const db = client.db(dbName);
             const col = await db.collection( collection );
-            const result = await col.findOne(filter).toArray();
+            const result = await col.findOne(filter);
+            debug(result);
             return result;
         } catch (err) {
             debug(err.stack);

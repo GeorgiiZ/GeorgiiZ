@@ -15,7 +15,7 @@ async function importMonumentsHelper(dbManager: DBInput, fileReader: FileReader)
         const filePath = path.join(__dirname, `../../assets/${ i }.json`);
         const monuments = await fileReader.getMonuments(filePath);
         const monumentsNew = mapMonuments(monuments);
-        await dbManager.insertMany('monuments_2', monumentsNew);
+        await dbManager.insertMany('monuments', monumentsNew);
     }
 }
 
