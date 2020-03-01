@@ -22,7 +22,7 @@ function router(dbManager: DBInput) {
 
     authRouter.route('/profile')
         .all((req: any, res: any, next: any)=>{
-            debug(req.user);
+            debug({ user: req.user });
             if(req.user){
                 next();
             } else {

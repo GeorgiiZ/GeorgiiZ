@@ -6,10 +6,21 @@ import monumentsRouter from './src/routes/monumentsRoutes';
 import authRouter from './src/routes/authRoutes';
 import MongoManager from "./src/classes/MongoManager";
 import { passportConfig } from './src/config/passport';
-
-
 const morgan = require('morgan');
 const debug = require('debug')('app');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
+const sessionMiddleware = session({
+    secret: 'library',
+    resave: true,
+    rolling: true,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 10 * 60 * 1000,
+        httpOnly: false,
+    },
+});
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -18,6 +29,8 @@ app.use(morgan('tiny'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(sessionMiddleware);
 
 app.use(express.static(path.join(__dirname, '/public/')));
 

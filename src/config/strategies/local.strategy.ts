@@ -12,11 +12,13 @@ function localStrategy(dbManager: DBReader) {
         }, async (username: any, password: any, done: any) => {
             debug('Connected correctly to server');
             const user = await dbManager.findOne('users', { name: username });
-            debug(passport);
+            debug(password);
             if (user.password === password) {
                 done(null, user);
+                debug('Successful auth!')
             } else {
                 done(null, false);
+                debug('Unsuccessful auth!')
             }
         }));
 };
