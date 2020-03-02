@@ -8,7 +8,7 @@ const port = process.env.PORT || 4000;
 //     console.log(res.data);
 // });
 
-    axios.post(`http://localhost:${ port }/auth/signin`,  querysting.stringify({ username: 'Jora', password: '123' }))
+axios.post(`http://localhost:${ port }/auth/signin`,  querysting.stringify({ username: 'Jora', password: '123' }))
 .then((res) => {
     console.log(res.data);
 });
