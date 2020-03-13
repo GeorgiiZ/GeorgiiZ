@@ -1,36 +1,26 @@
 import { MonumentsService } from '../services/MonumentsService';
 const debug = require('debug')('app:monumentsController');
-import { DBReader } from '../interfaces/interfaces';
+import MonumentsManager from '../classes/MonumentsManger';
 import { QueryFilterFactory } from '../classes/QueryFilterFactory';
+import { DBReader, DBInput } from "../interfaces/interfaces";
 
-export default class MonumentsController{
-    readonly dbManager: DBReader;
+export default function monumentsController(dbManager: DBReader | DBInput){
+    const monumentsManager = new MonumentsManager(dbManager);
 
-    constructor(dbManager: DBReader){
-        this.dbManager = dbManager;
+    async function getMonumentById(req: any, res: any) {
+        const { id } = req.params;
+        const monument = await monumentsManager.getMonumentById(id);
+        res.json(monument);
     }
 
-    public async getMonumentById(id: string){
-        try {
-            const monument = await MonumentsService.getMonumentById(id);
-            return monument;
-        }
-        catch (err) {
-            debug(err);
-            throw err;
-        }
+    async function getMonuments(req: any, res: any) {
+        let { limit, filter } = req.query;
+        const monuments = await monumentsManager.getMonuments(limit, filter);
+        res.json(monuments);
     }
 
-    public async getMonuments(limit: any, filterRequest: any){
-        // debug(filterRequest);
-        const filter = QueryFilterFactory.setupFilter(filterRequest);
-        // debug(filter);
-        const monuments = await this.getMonumentsHelper(filter, +limit);
-        return monuments;
-    }
-
-    async getMonumentsHelper(filter: object|undefined, limit: number): Promise<Array<any>>{
-        const monuments = await this.dbManager.findMany('monuments', filter, limit);
-        return monuments;
+    return {
+        getMonumentById,
+        getMonuments
     }
 }

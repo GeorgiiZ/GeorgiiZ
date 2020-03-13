@@ -2,6 +2,8 @@ interface DBInput {
     insertMany(collection: string, items : Array<any>): Promise<void>;
 
     insertOne(collection: string, item: any): Promise<any>;
+
+    pushToExistedArray(collection: string, query: any, updatedFields: any): Promise<void>;
 }
 
 interface DBReader {

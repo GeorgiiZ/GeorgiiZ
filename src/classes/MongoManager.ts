@@ -39,6 +39,22 @@ export default class MongoManager implements DBInput, DBReader{
         client.close();
     }
 
+    async pushToExistedArray(collection: string, query: any, updatedFields: any): Promise<void> {
+        let client;
+        try {
+            debug(query, updatedFields);
+            client = await MongoClient.connect(mongoUrl);
+            debug('Connected correctly to server');
+            const db = client.db(dbName);
+            const results = await db.collection(collection).updateOne(query, { $push: updatedFields });
+            debug('Data inserted correctly!');
+            // return results.ops[0];
+        } catch (err) {
+            debug(err.stack);
+        }
+        client.close();
+    }
+
     async findMany(collection: string, filter:any, limit: number = 0) : Promise<Array<any> | undefined>{
         let client;
         try {

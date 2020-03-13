@@ -1,36 +1,40 @@
 import express from 'express';
 
-import MonumentsController from '../controllers/monumentsController';
-import {DBReader} from "../interfaces/interfaces";
+import monumentsController from '../controllers/monumentsController';
+import { DBReader, DBInput } from "../interfaces/interfaces";
+const debug = require('debug')('app:monumentsRouter.ts');
+
 
 const monumentsRouter = express.Router();
 
-function router(dbManager: DBReader){
-    const monumentsController = new MonumentsController(dbManager);
+function router(dbManager: DBReader | DBInput){
+    const { getMonumentById, getMonuments } = monumentsController(dbManager);
 
     monumentsRouter.route('/:id')
-        .get( async (req, res) => {
-            const { id } = req.params;
-            const monument = await monumentsController.getMonumentById(id);
-            res.json(monument);
-        });
+        .get( getMonumentById );
 
     monumentsRouter.route('/:id/comment')
-        .get( async (req, res) => {
-
+        .post( async (req, res) => {
         });
 
     monumentsRouter.route('/:id/like')
-        .get( async (req, res) => {
-
+        .get( async (req: any, res) => {
+            const { id: monumentId } = req.params;
+            if(req.isAuthenticated()){
+                const user = req.user;
+                debug(user);
+                await (<DBInput>dbManager).pushToExistedArray(
+                    'monuments',
+                    { nativeId: monumentId},
+                    { likes: user._id });
+                res.send("you liked a monument!");
+            } else {
+                res.redirect('/');
+            }
         });
 
     monumentsRouter.route('/')
-        .get( async (req, res) => {
-            let { limit, filter } = req.query;
-            const monuments = await monumentsController.getMonuments(limit, filter);
-            res.json(monuments);
-        });
+        .get( getMonuments );
 
     return monumentsRouter;
 }
