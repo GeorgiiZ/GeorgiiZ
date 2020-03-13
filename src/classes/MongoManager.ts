@@ -1,4 +1,4 @@
-import mongoConfig from "../config/mongoConfig";
+import mongoConfig from "../db_config/mongoConfig";
 const { MongoClient } = require('mongodb');
 import {DBInput, DBReader} from '../interfaces/interfaces';
 

@@ -15,6 +15,16 @@ function router(dbManager: DBReader){
             res.json(monument);
         });
 
+    monumentsRouter.route('/:id/comment')
+        .get( async (req, res) => {
+
+        });
+
+    monumentsRouter.route('/:id/like')
+        .get( async (req, res) => {
+
+        });
+
     monumentsRouter.route('/')
         .get( async (req, res) => {
             let { limit, filter } = req.query;

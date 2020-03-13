@@ -5,7 +5,7 @@ import adminRouter from './src/routes/adminRoutes';
 import monumentsRouter from './src/routes/monumentsRoutes';
 import authRouter from './src/routes/authRoutes';
 import MongoManager from "./src/classes/MongoManager";
-import { passportConfig } from './src/config/passport';
+import { passportConfig } from './src/passport/passport';
 const morgan = require('morgan');
 const debug = require('debug')('app');
 const cookieParser = require('cookie-parser');
