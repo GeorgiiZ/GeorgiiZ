@@ -14,7 +14,21 @@ function router(dbManager: DBReader | DBInput){
         .get( getMonumentById );
 
     monumentsRouter.route('/:id/comment')
-        .post( async (req, res) => {
+        .post( async (req: any, res: any) => {
+            const { id: monumentId } = req.params;
+            const  { text: commentText} = req.body;
+            if(req.isAuthenticated()){
+                const user = req.user;
+                const result = await (<DBInput>dbManager).insertOne('comments', {
+                    date: new Date(),
+                    text: commentText,
+                    userId: user._id,
+                    monumentId: monumentId,
+                });
+                res.send("you commented a monument!");
+            } else {
+                res.redirect('/authentication_form.html');
+            }
         });
 
     monumentsRouter.route('/:id/like')
@@ -29,7 +43,7 @@ function router(dbManager: DBReader | DBInput){
                     { likes: user._id });
                 res.send("you liked a monument!");
             } else {
-                res.redirect('/');
+                res.redirect('/authentication_form.html');
             }
         });
 

@@ -5,6 +5,7 @@ import  User from '../models/User';
 export default function authController(dbManager: DBInput) {
 
     async function signUp(req: any, res: any) {
+        debug(req.body);
         const { username, password } = req.body;
         debug({ username, password });
         const user = new User(username, password);
