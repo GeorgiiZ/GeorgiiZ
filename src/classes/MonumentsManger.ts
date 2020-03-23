@@ -10,6 +10,24 @@ export default class MonumentsManager{
         this.dbManager = dbManager;
     }
 
+    public async likeMonument(userId: number, monumentId : number){
+        const result = await (<DBInput>this.dbManager).pushToSet(
+            'monuments',
+            { nativeId: monumentId },
+            { likes: userId });
+        return result;
+    }
+
+    public async commentMonument(userId: number, monumentId : number, commentText: string){
+        const result = await (<DBInput>this.dbManager).insertOne('comments', {
+            date: new Date(),
+            text: commentText,
+            userId: userId,
+            monumentId: monumentId,
+        });
+        return result;
+    }
+
     public async getMonumentById(id: string){
         try {
             const monument = await MonumentsService.getMonumentById(id);
@@ -27,7 +45,7 @@ export default class MonumentsManager{
         return monuments;
     }
 
-    async getMonumentsHelper(filter: object|undefined, limit: number): Promise<Array<any>>{
+    private async getMonumentsHelper(filter: object|undefined, limit: number): Promise<Array<any>>{
         const monuments = await (<DBReader>this.dbManager).findMany('monuments', filter, limit);
         return monuments;
     }

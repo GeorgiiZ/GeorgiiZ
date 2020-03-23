@@ -3,7 +3,7 @@ interface DBInput {
 
     insertOne(collection: string, item: any): Promise<any>;
 
-    pushToExistedArray(collection: string, query: any, updatedFields: any): Promise<void>;
+    pushToSet(collection: string, query: any, updatedFields: any): Promise<void>;
 }
 
 interface DBReader {

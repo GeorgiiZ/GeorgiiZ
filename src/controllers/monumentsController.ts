@@ -19,8 +19,33 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         res.json(monuments);
     }
 
+    async function commentMonument(req: any, res: any){
+        const { id: monumentId } = req.params;
+        const  { text: commentText} = req.body;
+        if( req.isAuthenticated() ){
+            const user = req.user;
+            await monumentsManager.commentMonument(user._id, monumentId, commentText);
+            res.send("you commented a monument!");
+        } else {
+            res.redirect('/authentication_form.html');
+        }
+    }
+
+    async function likeMonument(req: any, res: any){
+        const { id: monumentId } = req.params;
+        if(req.isAuthenticated()){
+            const user = req.user;
+            await monumentsManager.likeMonument(user._id, monumentId);
+            res.send("you liked a monument!");
+        } else {
+            res.redirect('/authentication_form.html');
+        }
+    }
+
     return {
         getMonumentById,
-        getMonuments
+        getMonuments,
+        commentMonument,
+        likeMonument
     }
 }
