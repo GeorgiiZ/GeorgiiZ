@@ -15,6 +15,14 @@ const session = require('express-session');
 let RedisStore = require('connect-redis')(session)
 let redisClient = redis.createClient()
 
+redisClient.on('connect', function() {
+    console.log('Redis client connected');
+});
+
+redisClient.on('error', function (err: any) {
+    console.log('Something went wrong ' + err);
+});
+
 const sessionMiddleware = session({
     store: new RedisStore({ client: redisClient }),
     secret: 'library',
