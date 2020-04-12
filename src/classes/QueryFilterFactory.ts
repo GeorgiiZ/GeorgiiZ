@@ -9,16 +9,15 @@ class QueryFilterFactory{
             return {}
         }
         let filter = {};
-        Object.keys(filterRequest).forEach((filtertype: string) => {
-            const curFilter = this.setupFilterHelper(filtertype);
-            const value = filterRequest[filtertype];
-            filter = Object.assign(filter, curFilter?.getFilter(value));
+        Object.entries(filterRequest).forEach( ([ filterKey, filterValue ]) => {
+            const curFilter = this.setupFilterHelper(filterKey);
+            filter = Object.assign(filter, curFilter?.getFilter(<string>filterValue));
         });
         return filter;
     }
 
-    private static setupFilterHelper(filterType: string): QueryFilter | null {
-        switch(filterType) {
+    private static setupFilterHelper(filterKey: string): QueryFilter | null {
+        switch(filterKey) {
             case 'region':
                 return new RegionFilter();
                 break;
