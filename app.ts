@@ -55,7 +55,7 @@ const dbManager = new MongoManager();
 passportConfig(app, dbManager);
 
 app.use("/admin", adminRouter(dbManager));
-app.use("/monuments", monumentsRouter(dbManager));
+app.use("/monuments", monumentsRouter(dbManager, redisClient));
 app.use("/auth", authRouter(dbManager));
 
 app.listen(port, () => {
