@@ -1,4 +1,4 @@
-import { MonumentsService } from '../services/MonumentsService';
+import { MonumentsOpenData } from '../services/MonumentsOpenData';
 const debug = require('debug')('app:monumentsController');
 import { DBReader, DBInput } from '../interfaces/interfaces';
 import { QueryFilterFactory } from '../classes/QueryFilterFactory';
@@ -30,7 +30,7 @@ export default class MonumentsManager{
 
     public async getMonumentById(id: string){
         try {
-            const monument = await MonumentsService.getMonumentById(id);
+            const monument = await MonumentsOpenData.getMonumentById(id);
             return monument;
         }
         catch (err) {

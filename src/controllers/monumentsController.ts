@@ -1,7 +1,5 @@
-import { MonumentsService } from '../services/MonumentsService';
 const debug = require('debug')('app:monumentsController');
 import MonumentsManager from '../classes/MonumentsManger';
-import { QueryFilterFactory } from '../classes/QueryFilterFactory';
 import { DBReader, DBInput } from "../interfaces/interfaces";
 
 export default function monumentsController(dbManager: DBReader | DBInput){

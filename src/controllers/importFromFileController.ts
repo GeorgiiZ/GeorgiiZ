@@ -1,7 +1,6 @@
 import path from 'path';
 import { DBInput, FileReader } from '../interfaces/interfaces';
-import MongoManager from "../classes/MongoManager";
-import TextFileManager from "../classes/TextFileManager";
+import TextFileManager from "../services/TextFileManager";
 
 const debug = require('debug')('app:importFromFileController');
 
