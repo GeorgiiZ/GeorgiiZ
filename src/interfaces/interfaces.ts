@@ -13,7 +13,7 @@ interface DBReader {
 }
 
 interface FileReader {
-    getMonuments(filePath: string): Promise<Array<any>>;
+    readMonuments(): Promise<Array<any>>;
 }
 
 export {

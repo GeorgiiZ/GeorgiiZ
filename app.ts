@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
-import adminRouter from './src/routes/adminRoutes';
 import monumentsRouter from './src/routes/monumentsRoutes';
 import authRouter from './src/routes/authRoutes';
 import MongoManager from "./src/services/MongoManager";
@@ -54,7 +53,6 @@ const dbManager = new MongoManager();
 
 passportConfig(app, dbManager);
 
-app.use("/admin", adminRouter(dbManager));
 app.use("/monuments", monumentsRouter(dbManager, redisClient));
 app.use("/auth", authRouter(dbManager));
 
