@@ -40,6 +40,7 @@ export default class MonumentsManager{
     }
 
     public async getMonuments(limit: any, filterRequest: any){
+        debug(filterRequest);
         const filter = QueryFilterFactory.setupFilter(filterRequest);
         const monuments = await this.getMonumentsHelper(filter, +limit);
         return monuments;

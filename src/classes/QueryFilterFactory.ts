@@ -1,4 +1,4 @@
-import { QueryFilter, RegionFilter } from './QueryFilter';
+import { QueryFilter, RegionFilter, TownFilter } from './QueryFilter';
 
 const debug = require('debug')('app:QueryFilterFactory');
 
@@ -20,10 +20,10 @@ class QueryFilterFactory{
         switch(filterKey) {
             case 'region':
                 return new RegionFilter();
-                break;
+            case 'town':
+                return new TownFilter();
             default:
                 return null;
-                break;
         };
     }
 }

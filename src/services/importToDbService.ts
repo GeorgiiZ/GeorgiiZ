@@ -17,17 +17,53 @@ function mapMonuments(monuments: Array<any>) {
             data: {
                 general: {
                     region,
-                    photo
+                    photo,
+                    address
                 }
             }
         } = monument;
+
+        const town = getTownName(address?.fullAddress);
+
         return {
-            nativeId,
-            nativeName,
-            region,
-            photo
+            nativeId : nativeId?.trim(),
+            nativeName: nativeName?.trim(),
+            region: region,
+            photo: photo,
+            town: town?.trim()
         }
     });
+}
+
+function getTownName(fullAddress: string){
+    if(!fullAddress)
+        return null;
+    const addressParts = fullAddress?.split(',');
+    let town = addressParts.find(item => isTownName(item.trim())) || null;
+
+    return town;
+}
+
+// function getPureTownName(town: any){
+//     if(!town)
+//         return null;
+//     let result = town.replace('.', ' ');
+//     result = result.replace(/\s\s+/g, ' '); // replace multi spaces with one space
+//     result = result.split(' ')[1];
+//     return result;
+// }
+
+function isTownName(town: string): boolean{
+    const prefix = town[0];
+    return <boolean>(
+        town && (prefix === 'г'
+            || prefix === 'с'
+            || prefix === 'д'
+            || prefix === 'о'
+            || prefix === 'п'
+            || prefix === 'р'
+        )
+    );
 }
 
 export { importMonuments }

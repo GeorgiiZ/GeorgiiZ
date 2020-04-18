@@ -8,7 +8,15 @@ class RegionFilter extends QueryFilter{
     }
 }
 
+class TownFilter extends QueryFilter{
+    getFilter(value: string): object {
+        return { "town": value };
+    }
+}
+
+
 export{
     QueryFilter,
-    RegionFilter
+    RegionFilter,
+    TownFilter
 }
