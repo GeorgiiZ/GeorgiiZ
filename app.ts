@@ -18,6 +18,7 @@ redisClient.on('connect', function() {
     console.log('Redis client connected');
 });
 
+
 redisClient.on('error', function (err: any) {
     console.log('Something went wrong ' + err);
 });
