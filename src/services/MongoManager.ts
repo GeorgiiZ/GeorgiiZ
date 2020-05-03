@@ -10,6 +10,8 @@ const dbName = mongoConfig.db || 'myDB';
 const mongoUrl = `mongodb://${ mongoHost }:${ mongoPort }/${ dbName }`;
 
 export default class MongoManager implements DBInput, DBReader{
+    defaultMap = (x: any) => x;
+
     async insertMany(collection: string, items: Array<any>): Promise<void> {
         let client;
         try {
@@ -55,14 +57,18 @@ export default class MongoManager implements DBInput, DBReader{
         client.close();
     }
 
-    async findMany(collection: string, filter:any, limit: number = 0) : Promise<Array<any> | undefined>{
+
+    async findMany(collection: string, filter:any, limit: number = 0, mapFunc: Function = this.defaultMap) : Promise<Array<any> | undefined>{
         let client;
         try {
             client = await MongoClient.connect(mongoUrl);
             debug('Connected correctly to server');
             const db = client.db(dbName);
-            const col = await db.collection( collection );
-            const result = await col.find(filter).limit(limit).toArray();
+            const result = await db.collection(collection)
+                                   .find(filter)
+                                   .limit(limit)
+                                   .map(mapFunc)
+                                   .toArray();
             return result;
         } catch (err) {
             debug(err.stack);

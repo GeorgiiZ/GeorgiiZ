@@ -8,11 +8,11 @@ import { passportConfig } from './src/passport/passport';
 const morgan = require('morgan');
 const debug = require('debug')('app');
 const cookieParser = require('cookie-parser');
-const redis = require('redis')
+const redis = require('redis');
 const session = require('express-session');
 
-let RedisStore = require('connect-redis')(session)
-let redisClient = redis.createClient()
+let RedisStore = require('connect-redis')(session);
+let redisClient = redis.createClient();
 
 redisClient.on('connect', function() {
     console.log('Redis client connected');
