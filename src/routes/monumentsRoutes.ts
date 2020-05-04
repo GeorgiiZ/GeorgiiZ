@@ -8,13 +8,26 @@ const debug = require('debug')('app:monumentsRouter.ts');
 const monumentsRouter = express.Router();
 
 function router(dbManager: DBReader | DBInput, cacheClient: any){
-    const { getMonumentById, getMonuments, commentMonument, likeMonument } = monumentsController(dbManager);
+    const {
+        getMonumentById,
+        getMonuments,
+        commentMonument,
+        likeMonument,
+        getComments
+    } = monumentsController(dbManager);
 
     initRouteHitsCounter(cacheClient, {
         'monument-id': 0,
         'monument-like': 0,
         'monuments': 0
     });
+
+    monumentsRouter.route('/')
+        .all((req, res, next) => {
+            incrementRouteHit(cacheClient, 'monuments');
+            next();
+        })
+        .get( getMonuments );
 
     monumentsRouter.route('/:id')
         .all((req: any, res: any, next: any) => {
@@ -23,8 +36,9 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
         })
         .get( getMonumentById );
 
-    monumentsRouter.route('/:id/comment')
-        .post( commentMonument );
+    monumentsRouter.route('/:id/comments')
+        .post( commentMonument )
+        .get( getComments );
 
     monumentsRouter.route('/:id/like')
         .all((req, res, next)=>{
@@ -32,13 +46,6 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
             next();
         })
         .get( likeMonument );
-
-    monumentsRouter.route('/')
-        .all((req, res, next)=>{
-            incrementRouteHit(cacheClient, 'monuments');
-            next();
-        })
-        .get( getMonuments );
 
     return monumentsRouter;
 }

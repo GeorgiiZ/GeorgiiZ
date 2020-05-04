@@ -1,5 +1,5 @@
 export default class MonumentsMapping {
-    static mapOpenDataMonuments(monument: any){
+    static mapOpenDataMonument(monument: any){
         const {
             nativeId,
             nativeName,

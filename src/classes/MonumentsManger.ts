@@ -15,6 +15,7 @@ export default class MonumentsManager {
             'monuments',
             { nativeId: monumentId },
             { likes: userId });
+
         return result;
     }
 
@@ -25,39 +26,56 @@ export default class MonumentsManager {
             userId: userId,
             monumentId: monumentId,
         });
+
         return result;
     }
 
-    async getMonumentById(id: string){
-        try {
-            const monument = await (<DBReader>this.dbManager).findOne('monuments',{
-                nativeId: id
-            });
-            const likesCount = this.getLikesCount(monument.likes);
-            const resultMonument = Object.assign(monument, { likesCount });
-            debug(resultMonument);
-            return resultMonument;
-        }
-        catch (err) {
-            throw err;
-        }
+    async getComments(monumentId : number, limit: any){
+        const comments = await (<DBReader>this.dbManager).findMany(
+            'comments',
+            { monumentId },
+            +limit
+        );
+
+        return comments;
+    }
+
+    async getMonumentById(id: number){
+        const monument = await (<DBReader>this.dbManager).findOne(
+            'monuments',
+            { nativeId: id }
+        );
+        const likesCount = this.getLikesCount(monument.likes);
+        const resultMonument = Object.assign(monument, { likesCount });
+        debug(resultMonument);
+
+        return resultMonument;
     }
 
     async getMonuments(limit: any, filterRequest: any){
         const filter = QueryFilterFactory.setupFilter(filterRequest);
         const monuments = await this.getMonumentsHelper(filter, +limit);
+
         return monuments;
     }
 
     private async getMonumentsHelper(filter: object|undefined, limit: number): Promise<Array<any>>{
-        const mapFunc = contextSaveDecor(this.mapMonuments, this);
-        const monuments = await (<DBReader>this.dbManager).findMany('monuments', filter, limit, mapFunc);
+        const mapFunc = contextSaveDecor(this.mapMonument, this);
+        const monuments = await (<DBReader>this.dbManager).findMany(
+            'monuments',
+            filter,
+            limit,
+            mapFunc
+        );
+
         return monuments;
     }
 
-    private mapMonuments(monument: any){
+    private mapMonument(monument: any){
         const likesCount = this.getLikesCount(monument.likes);
-        return Object.assign(monument, { likesCount })
+        const resultMonument = Object.assign(monument, { likesCount });
+
+        return resultMonument;
     }
 
     private getLikesCount(likes: any){

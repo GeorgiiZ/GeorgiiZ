@@ -18,7 +18,7 @@ export default class MongoService implements DBInput, DBReader{
             client = await MongoClient.connect(mongoUrl);
             debug('Connected correctly to server');
             const db = client.db(dbName);
-             await db.collection( collection ).insertMany(items);
+            await db.collection( collection ).insertMany(items);
             debug('Data inserted correctly!');
         } catch (err) {
             debug(err.stack);
@@ -83,8 +83,7 @@ export default class MongoService implements DBInput, DBReader{
             client = await MongoClient.connect(mongoUrl);
             debug('Connected correctly to server');
             const db = client.db(dbName);
-            const col = await db.collection( collection );
-            const result = await col.findOne(filter);
+            const result = await db.collection(collection).findOne(filter);
             debug(result);
             return result;
         } catch (err) {

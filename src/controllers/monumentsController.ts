@@ -10,7 +10,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
     async function getMonumentById(req: any, res: any) {
         const { id } = req.params;
         const monument = await MonumentsOpenData.getMonumentById(id);
-        const monumentMapped = MonumentsMapping.mapOpenDataMonuments(monument);
+        const monumentMapped = MonumentsMapping.mapOpenDataMonument(monument);
         const innerMonument = await monumentsManager.getMonumentById(id);
         const resultMonument = Object.assign(monumentMapped, innerMonument);
         res.json(resultMonument);
@@ -24,7 +24,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
 
     async function commentMonument(req: any, res: any){
         const { id: monumentId } = req.params;
-        const  { text: commentText} = req.body;
+        const  { text: commentText } = req.body;
         if( req.isAuthenticated() ){
             const user = req.user;
             await monumentsManager.commentMonument(user._id, monumentId, commentText);
@@ -34,9 +34,16 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         }
     }
 
+    async function getComments(req: any, res: any){
+        const { id: monumentId } = req.params;
+        let { limit } = req.query;
+        const comments = await monumentsManager.getComments(monumentId, limit);
+        res.json(comments);
+    }
+
     async function likeMonument(req: any, res: any){
         const { id: monumentId } = req.params;
-        if(req.isAuthenticated()){
+        if( req.isAuthenticated() ){
             const user = req.user;
             await monumentsManager.likeMonument(user._id, monumentId);
             res.send("you liked a monument!");
@@ -49,6 +56,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         getMonumentById,
         getMonuments,
         commentMonument,
-        likeMonument
+        likeMonument,
+        getComments
     }
 }

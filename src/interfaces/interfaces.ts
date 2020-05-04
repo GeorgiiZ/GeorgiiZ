@@ -7,7 +7,7 @@ interface DBInput {
 }
 
 interface DBReader {
-    findMany(collection: string, filter: Object | undefined, limit: number, mapFunc: Function): Promise<any>;
+    findMany(collection: string, filter: Object | undefined, limit: number, mapFunc?: Function): Promise<any>;
 
     findOne(collection: string, filter: Object | undefined): Promise<any>;
 }

@@ -1,9 +1,10 @@
 import path from 'path';
 import { DBInput, FileReader } from '../interfaces/interfaces';
+import MonumentsMapping from "../services/MonumentsMapping";
 
 const debug = require('debug')('app:importFromFileController');
 
-async function importMonuments(dbManager: DBInput, fileReader: FileReader){
+async function importMonuments(dbManager: DBInput, fileReader: FileReader) {
     const monuments = await fileReader.readMonuments();
     const monumentsMapped = mapMonuments(monuments);
     await dbManager.insertMany('monuments', monumentsMapped);
@@ -14,14 +15,10 @@ function mapMonuments(monuments: Array<any>) {
         const {
             nativeId,
             nativeName,
-            data: {
-                general: {
-                    region,
-                    photo,
-                    address
-                }
-            }
-        } = monument;
+            region,
+            photo,
+            address
+        } = MonumentsMapping.mapOpenDataMonument(monument);
 
         const town = getTownName(address?.fullAddress);
 
