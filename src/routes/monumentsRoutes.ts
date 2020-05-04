@@ -1,9 +1,8 @@
 import express from 'express';
-
 import monumentsController from '../controllers/monumentsController';
 import { DBReader, DBInput } from "../interfaces/interfaces";
+import authController from "../controllers/authController";
 const debug = require('debug')('app:monumentsRouter.ts');
-
 
 const monumentsRouter = express.Router();
 
@@ -15,6 +14,8 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
         likeMonument,
         getComments
     } = monumentsController(dbManager);
+
+    const { profileCheckAuthorized } = authController(<DBInput>dbManager);
 
     initRouteHitsCounter(cacheClient, {
         'monument-id': 0,
@@ -37,21 +38,27 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
         .get( getMonumentById );
 
     monumentsRouter.route('/:id/comments')
-        .post( commentMonument )
-        .get( getComments );
+        .post(
+            profileCheckAuthorized,
+            commentMonument
+        )
+        .get(getComments);
 
     monumentsRouter.route('/:id/like')
-        .all((req, res, next)=>{
+        .all((req, res, next) => {
             incrementRouteHit(cacheClient, 'monument-like');
             next();
         })
-        .get( likeMonument );
+        .get(
+            profileCheckAuthorized,
+            likeMonument
+        );
 
     return monumentsRouter;
 }
 
 function initRouteHitsCounter(cacheClient: any, routeCounters: Object) {
-    Object.entries(routeCounters).forEach(([key, value]) =>{
+    Object.entries(routeCounters).forEach(([key, value]) => {
         cacheClient.set(key, value);
     })
 }

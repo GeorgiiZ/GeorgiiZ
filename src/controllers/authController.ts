@@ -21,7 +21,7 @@ export default function authController(dbManager: DBInput) {
         if(req.isAuthenticated()){
             next();
         } else {
-            res.redirect('/');
+            res.redirect('/authentication_form.html');
         }
     }
 
