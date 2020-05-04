@@ -1,8 +1,9 @@
-const debug = require('debug')('app:MongoManager');
+const debug = require('debug')('app:MongoService');
 import { DBReader, DBInput } from '../interfaces/interfaces';
 import { QueryFilterFactory } from '../classes/QueryFilterFactory';
+import { contextSaveDecor } from '../utility/functionDecorators'
 
-export default class MonumentsManager{
+export default class MonumentsManager {
     readonly dbManager: DBReader | DBInput;
 
     constructor(dbManager: DBReader | DBInput){
@@ -49,13 +50,13 @@ export default class MonumentsManager{
     }
 
     private async getMonumentsHelper(filter: object|undefined, limit: number): Promise<Array<any>>{
-        const monuments = await (<DBReader>this.dbManager).findMany('monuments', filter, limit, this.mapMonuments);
+        const mapFunc = contextSaveDecor(this.mapMonuments, this);
+        const monuments = await (<DBReader>this.dbManager).findMany('monuments', filter, limit, mapFunc);
         return monuments;
     }
 
     private mapMonuments(monument: any){
-        const likes = monument.likes
-        const likesCount = likes? likes.length : 0;
+        const likesCount = this.getLikesCount(monument.likes);
         return Object.assign(monument, { likesCount })
     }
 

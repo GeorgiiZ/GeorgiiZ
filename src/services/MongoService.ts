@@ -2,14 +2,14 @@ import mongoConfig from "../db_config/mongoConfig";
 const { MongoClient } = require('mongodb');
 import {DBInput, DBReader} from '../interfaces/interfaces';
 
-const debug = require('debug')('app:MongoManager.ts');
+const debug = require('debug')('app:MongoService.ts');
 
 const mongoHost = mongoConfig.host ||  'localhost';
 const mongoPort = mongoConfig.port || '27017';
 const dbName = mongoConfig.db || 'myDB';
 const mongoUrl = `mongodb://${ mongoHost }:${ mongoPort }/${ dbName }`;
 
-export default class MongoManager implements DBInput, DBReader{
+export default class MongoService implements DBInput, DBReader{
     defaultMap = (x: any) => x;
 
     async insertMany(collection: string, items: Array<any>): Promise<void> {

@@ -3,7 +3,7 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import monumentsRouter from './src/routes/monumentsRoutes';
 import authRouter from './src/routes/authRoutes';
-import MongoManager from "./src/services/MongoManager";
+import MongoService from "./src/services/MongoService";
 import { passportConfig } from './src/passport/passport';
 const morgan = require('morgan');
 const debug = require('debug')('app');
@@ -51,7 +51,7 @@ app.get('/', (req: any, res: any) => {
     res.send('hello world');
 });
 
-const dbManager = new MongoManager();
+const dbManager = new MongoService();
 
 passportConfig(app, dbManager);
 

@@ -1,7 +1,7 @@
-
 const debug = require('debug')('app:monumentsController');
 import MonumentsManager from '../classes/MonumentsManger';
 import MonumentsOpenData from "../services/MonumentsOpenData";
+import MonumentsMapping from "../services/MonumentsMapping"
 import { DBReader, DBInput } from "../interfaces/interfaces";
 
 export default function monumentsController(dbManager: DBReader | DBInput){
@@ -10,8 +10,9 @@ export default function monumentsController(dbManager: DBReader | DBInput){
     async function getMonumentById(req: any, res: any) {
         const { id } = req.params;
         const monument = await MonumentsOpenData.getMonumentById(id);
+        const monumentMapped = MonumentsMapping.mapOpenDataMonuments(monument);
         const innerMonument = await monumentsManager.getMonumentById(id);
-        const resultMonument = Object.assign(monument, innerMonument);
+        const resultMonument = Object.assign(monumentMapped, innerMonument);
         res.json(resultMonument);
     }
 

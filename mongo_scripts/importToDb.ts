@@ -1,9 +1,9 @@
 import { importMonuments } from '../src/services/importToDbService';
 import  TextFileManager  from '../src/services/TextFileManager';
-import MongoManager from '../src/services/MongoManager';
+import MongoService from '../src/services/MongoService';
 import path from 'path';
 
-const mongoManager = new MongoManager();
+const mongoManager = new MongoService();
 
 async function importData() {
     for(let i = 1; i < 16; i++ ){
