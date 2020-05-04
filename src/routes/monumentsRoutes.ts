@@ -1,7 +1,7 @@
 import express from 'express';
 import monumentsController from '../controllers/monumentsController';
 import { DBReader, DBInput } from "../interfaces/interfaces";
-import authController from "../controllers/authController";
+import profileController from "../controllers/profileController";
 const debug = require('debug')('app:monumentsRouter.ts');
 
 const monumentsRouter = express.Router();
@@ -15,7 +15,7 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
         getComments
     } = monumentsController(dbManager);
 
-    const { profileCheckAuthorized } = authController(<DBInput>dbManager);
+    const { profileCheckAuthorized } = profileController(<DBInput>dbManager);
 
     initRouteHitsCounter(cacheClient, {
         'monument-id': 0,

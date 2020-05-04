@@ -2,7 +2,7 @@ const debug = require('debug')('app:AuthController');
 import { DBReader, DBInput } from '../interfaces/interfaces';
 import  User from '../models/User';
 
-export default function authController(dbManager: DBInput) {
+export default function profileController(dbManager: DBInput) {
 
     async function signUp(req: any, res: any) {
         debug(req.body);

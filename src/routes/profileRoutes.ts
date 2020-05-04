@@ -1,14 +1,13 @@
 import express from 'express';
 import {DBInput} from "../interfaces/interfaces";
-import authController from "../controllers/authController";
-import  User from '../models/User';
+import profileController from "../controllers/profileController";
 const passport=require('passport');
 
 const debug = require('debug')('app:authRoutes');
 const authRouter = express.Router();
 
 function router(dbManager: DBInput) {
-    const { signUp, profileCheckAuthorized, getProfile } = authController(dbManager);
+    const { signUp, profileCheckAuthorized, getProfile } = profileController(dbManager);
 
     authRouter.route('/signUp')
         .post( signUp );
