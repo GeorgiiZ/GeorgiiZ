@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import monumentsRouter from './src/routes/monumentsRoutes';
-import authRouter from './src/routes/authRoutes';
+import authRouter from './src/routes/profileRoutes';
 import MongoService from "./src/services/MongoService";
 import { passportConfig } from './src/passport/passport';
 const morgan = require('morgan');
