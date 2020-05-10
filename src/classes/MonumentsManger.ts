@@ -1,4 +1,4 @@
-const debug = require('debug')('app:MongoService');
+const debug = require('debug')('app:MonumentsManager');
 import { DBReader, DBInput } from '../interfaces/interfaces';
 import { QueryFilterFactory } from '../classes/QueryFilterFactory';
 import { contextSaveDecor } from '../utility/functionDecorators'
@@ -19,6 +19,31 @@ export default class MonumentsManager {
         return result;
     }
 
+    async favourMonument(userId: number, monumentId : number){
+        const result = await (<DBInput>this.dbManager).insertOne('favourites', {
+            date: new Date(),
+            userId: userId,
+            monumentId: monumentId,
+        });
+
+        return result;
+    }
+
+    async getMonumentFavours(userId: number, limit : number, skip: number){
+        const favourites = await (<DBReader>this.dbManager).findMany('favourites',
+            { userId: userId },
+            limit,
+            skip
+        );
+        const monumentsIds = favourites.map( (x: any) => x.monumentId);
+        const favouriteMonuments =  await (<DBReader>this.dbManager).findMany('monuments', {
+            nativeId: { $in: monumentsIds }
+        });
+
+        return favouriteMonuments;
+    }
+
+
     async commentMonument(userId: number, monumentId : number, commentText: string){
         const result = await (<DBInput>this.dbManager).insertOne('comments', {
             date: new Date(),
@@ -30,11 +55,12 @@ export default class MonumentsManager {
         return result;
     }
 
-    async getComments(monumentId : number, limit: any){
+    async getComments(monumentId : number, limit: number, skip: number){
         const comments = await (<DBReader>this.dbManager).findMany(
             'comments',
             { monumentId },
-            +limit
+            limit,
+            skip
         );
 
         return comments;
@@ -52,19 +78,14 @@ export default class MonumentsManager {
         return resultMonument;
     }
 
-    async getMonuments(limit: any, filterRequest: any){
+    async getMonuments(filterRequest: any, limit: number, skip: number){
         const filter = QueryFilterFactory.setupFilter(filterRequest);
-        const monuments = await this.getMonumentsHelper(filter, +limit);
-
-        return monuments;
-    }
-
-    private async getMonumentsHelper(filter: object|undefined, limit: number): Promise<Array<any>>{
         const mapFunc = contextSaveDecor(this.mapMonument, this);
         const monuments = await (<DBReader>this.dbManager).findMany(
             'monuments',
             filter,
             limit,
+            skip,
             mapFunc
         );
 

@@ -12,14 +12,15 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
         getMonuments,
         commentMonument,
         likeMonument,
-        getComments
+        getComments,
+        favourMonument,
+        getMonumentFavours
     } = monumentsController(dbManager);
 
     const { profileCheckAuthorized } = profileController(<DBInput>dbManager);
 
     initRouteHitsCounter(cacheClient, {
         'monument-id': 0,
-        'monument-like': 0,
         'monuments': 0
     });
 
@@ -29,6 +30,9 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
             next();
         })
         .get( getMonuments );
+
+    monumentsRouter.route('/favourites')
+        .get( getMonumentFavours );
 
     monumentsRouter.route('/:id')
         .all((req: any, res: any, next: any) => {
@@ -45,13 +49,15 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
         .get(getComments);
 
     monumentsRouter.route('/:id/like')
-        .all((req, res, next) => {
-            incrementRouteHit(cacheClient, 'monument-like');
-            next();
-        })
         .get(
             profileCheckAuthorized,
             likeMonument
+        );
+
+    monumentsRouter.route('/:id/favour')
+        .get(
+            profileCheckAuthorized,
+            favourMonument
         );
 
     return monumentsRouter;

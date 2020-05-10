@@ -18,10 +18,10 @@ export default function monumentsController(dbManager: DBReader | DBInput){
     }
 
     async function getMonuments(req: any, res: any) {
-        let { limit, filter } = req.query;
-        const monuments = await monumentsManager.getMonuments(limit, filter);
+            let { filter, limit, skip } = req.query;
+            const monuments = await monumentsManager.getMonuments(filter, +limit, +skip);
 
-        res.json(monuments);
+            res.json(monuments);
     }
 
     async function commentMonument(req: any, res: any){
@@ -35,8 +35,8 @@ export default function monumentsController(dbManager: DBReader | DBInput){
 
     async function getComments(req: any, res: any){
         const { id: monumentId } = req.params;
-        let { limit } = req.query;
-        const comments = await monumentsManager.getComments(monumentId, limit);
+        let { limit, skip } = req.query;
+        const comments = await monumentsManager.getComments(monumentId, +limit, +skip);
 
         res.json(comments);
     }
@@ -49,11 +49,39 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         res.send("you liked a monument!");
     }
 
+    async function favourMonument(req: any, res: any){
+        const { id: monumentId } = req.params;
+        const user = req.user;
+        await monumentsManager.favourMonument(user._id, monumentId);
+
+        res.send("you added a monument to favourites!");
+    }
+
+    async function getMonumentFavours(req: any, res: any){
+        let { limit, skip } = req.query;
+        const user = req.user;
+        const monuments = await monumentsManager.getMonumentFavours(user._id, +limit, +skip);
+
+        res.json(monuments);
+    }
+
+    function errorHandleWrapper(fn: Function){
+        return function (req: any, res: any) {
+            try {
+                fn(req, res);
+            } catch(err){
+                res.send("Something went wrong...")
+            }
+        }
+    }
+
     return {
-        getMonumentById,
-        getMonuments,
-        commentMonument,
-        likeMonument,
-        getComments
+        getMonumentById: errorHandleWrapper(getMonumentById),
+        getMonuments: errorHandleWrapper(getMonuments),
+        commentMonument: errorHandleWrapper(commentMonument),
+        likeMonument: errorHandleWrapper(likeMonument),
+        getComments: errorHandleWrapper(getComments),
+        favourMonument: errorHandleWrapper(favourMonument),
+        getMonumentFavours: errorHandleWrapper(getMonumentFavours)
     }
 }
