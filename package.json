@@ -30,7 +30,8 @@
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "ts-md5": "^1.2.7"
   },
   "nodemonConfig": {
     "restartable": "rs",

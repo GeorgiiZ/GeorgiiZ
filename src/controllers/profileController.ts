@@ -1,19 +1,29 @@
 const debug = require('debug')('app:AuthController');
 import { DBReader, DBInput } from '../interfaces/interfaces';
+import { Md5 } from 'ts-md5/dist/md5';
 import  User from '../models/User';
 
-export default function profileController(dbManager: DBInput) {
+export default function profileController(dbManager: DBInput | DBReader) {
 
     async function signUp(req: any, res: any) {
-        debug(req.body);
         const { username, password } = req.body;
-        debug({ username, password });
-        const user = new User(username, password);
-        const signedUser = await dbManager.insertOne('users', user);
+        const user = new User(username, <string>Md5.hashStr(password));
+        const signedUser = await (<DBInput>dbManager).insertOne('users', user);
 
         req.login(signedUser, () => {
             res.redirect('/auth/profile');
         });
+    }
+
+    async function signIn(username: any, password: any, done: any) {
+        const user = await (<DBReader>dbManager).findOne('users', { name: username });
+        if (user.password === Md5.hashStr(password)) {
+            done(null, user);
+            debug('Successful auth!')
+        } else {
+            done(null, false);
+            debug('Unsuccessful auth!')
+        }
     }
 
     function profileCheckAuthorized(req: any, res: any, next: any) {
@@ -32,6 +42,7 @@ export default function profileController(dbManager: DBInput) {
     return {
         signUp,
         profileCheckAuthorized,
-        getProfile
+        getProfile,
+        signIn
     }
 }
