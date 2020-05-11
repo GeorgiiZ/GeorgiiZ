@@ -14,7 +14,6 @@ class TownFilter extends QueryFilter{
     }
 }
 
-
 export{
     QueryFilter,
     RegionFilter,

@@ -1,9 +1,12 @@
 const debug = require('debug')('app:MonumentsManager');
 import { DBReader, DBInput } from '../interfaces/interfaces';
 import { QueryFilterFactory } from '../classes/QueryFilterFactory';
-import { contextSaveDecor } from '../utility/functionDecorators'
+import { contextSaveDecor } from '../utility/decorators';
+import  Comment from '../models/Comment';
+import  FavouriteMonument from '../models/FavouriteMonument';
 
-export default class MonumentsManager {
+
+export default class MonumentsManager{
     readonly dbManager: DBReader | DBInput;
 
     constructor(dbManager: DBReader | DBInput){
@@ -14,17 +17,17 @@ export default class MonumentsManager {
         const result = await (<DBInput>this.dbManager).pushToSet(
             'monuments',
             { nativeId: monumentId },
-            { likes: userId });
+            { likes: userId }
+        );
 
         return result;
     }
 
     async favourMonument(userId: number, monumentId : number){
-        const result = await (<DBInput>this.dbManager).insertOne('favourites', {
-            date: new Date(),
-            userId: userId,
-            monumentId: monumentId,
-        });
+        const result = await (<DBInput>this.dbManager).insertOne(
+            'favourites',
+            new FavouriteMonument(userId, monumentId)
+        );
 
         return result;
     }
@@ -43,14 +46,11 @@ export default class MonumentsManager {
         return favouriteMonuments;
     }
 
-
     async commentMonument(userId: number, monumentId : number, commentText: string){
-        const result = await (<DBInput>this.dbManager).insertOne('comments', {
-            date: new Date(),
-            text: commentText,
-            userId: userId,
-            monumentId: monumentId,
-        });
+        const result = await (<DBInput>this.dbManager).insertOne(
+            'comments',
+            new Comment(commentText, userId, monumentId)
+        );
 
         return result;
     }
@@ -73,7 +73,6 @@ export default class MonumentsManager {
         );
         const likesCount = this.getLikesCount(monument.likes);
         const resultMonument = Object.assign(monument, { likesCount });
-        debug(resultMonument);
 
         return resultMonument;
     }
