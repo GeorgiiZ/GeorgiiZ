@@ -1,6 +1,5 @@
 const debug = require('debug')('app:MonumentsManager');
 import { DBReader, DBInput } from '../interfaces/interfaces';
-import { QueryFilterFactory } from '../classes/QueryFilterFactory';
 import { contextSaveDecor } from '../utility/decorators';
 import  Comment from '../models/Comment';
 import  FavouriteMonument from '../models/FavouriteMonument';
@@ -77,8 +76,7 @@ export default class MonumentsManager{
         return resultMonument;
     }
 
-    async getMonuments(filterRequest: any, limit: number, skip: number){
-        const filter = QueryFilterFactory.setupFilter(filterRequest);
+    async getMonuments(filter: any, limit: number, skip: number){
         const mapFunc = contextSaveDecor(this.mapMonument, this);
         const monuments = await (<DBReader>this.dbManager).findMany(
             'monuments',

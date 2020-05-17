@@ -1,3 +1,5 @@
+import {QueryFilterFactory} from "../classes/QueryFilterFactory";
+
 const debug = require('debug')('app:monumentsController');
 import MonumentsManager from '../classes/MonumentsManger';
 import MonumentsOpenData from "../services/MonumentsOpenData";
@@ -18,10 +20,11 @@ export default function monumentsController(dbManager: DBReader | DBInput){
     }
 
     async function getMonuments(req: any, res: any) {
-            let { filter, limit, skip } = req.query;
-            const monuments = await monumentsManager.getMonuments(filter, +limit, +skip);
+        let { filter, limit, skip } = req.query;
+        const filterInner = QueryFilterFactory.setupFilter(filter);
+        const monuments = await monumentsManager.getMonuments(filterInner, +limit, +skip);
 
-            res.json(monuments);
+        res.json(monuments);
     }
 
     async function commentMonument(req: any, res: any){
