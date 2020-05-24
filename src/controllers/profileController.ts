@@ -16,11 +16,17 @@ export default function profileController(dbManager: DBInput | DBReader) {
     }
 
     async function signIn(username: any, password: any, done: any) {
-        const user = await (<DBReader>dbManager).findOne('users', { name: username });
-        if (user.password === Md5.hashStr(password)) {
-            done(null, user);
-            debug('Successful auth!')
-        } else {
+        try {
+            const user = await (<DBReader>dbManager).findOne('users', { name: username });
+            if (user.password === Md5.hashStr(password)) {
+                done(null, user);
+                debug('Successful auth!')
+            } else {
+                done(null, false);
+                debug('Unsuccessful auth!')
+            }
+        } catch(err){
+            debug(err)
             done(null, false);
             debug('Unsuccessful auth!')
         }
@@ -36,7 +42,7 @@ export default function profileController(dbManager: DBInput | DBReader) {
     }
 
     function getProfile(req: any, res: any) {
-        res.json(req.user)
+        res.status(200).json(req.user)
     }
 
     return {

@@ -10,10 +10,12 @@ const debug = require('debug')('app');
 const cookieParser = require('cookie-parser');
 const redis = require('redis');
 const session = require('express-session');
+import { initInflux } from "./src/services/influxService"
+
+initInflux()
 
 let RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient();
-
 
 redisClient.on('connect', function() {
     console.log('Redis client connected');
@@ -60,3 +62,4 @@ app.use("/auth", authRouter(dbManager));
 app.listen(port, () => {
     debug('Express server listening on port ' + port);
 });
+

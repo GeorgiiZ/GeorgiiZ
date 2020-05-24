@@ -5,6 +5,7 @@ import MonumentsManager from '../classes/MonumentsManger';
 import MonumentsOpenData from "../services/MonumentsOpenData";
 import MonumentsMapping from "../services/MonumentsMapping"
 import { DBReader, DBInput } from "../interfaces/interfaces";
+import { requestErrorHandler } from "../utility/decorators"
 
 export default function monumentsController(dbManager: DBReader | DBInput){
     const monumentsManager = new MonumentsManager(dbManager);
@@ -16,7 +17,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         const innerMonument = await monumentsManager.getMonumentById(id);
         const resultMonument = Object.assign(monumentMapped, innerMonument);
 
-        res.json(resultMonument);
+        res.status(200).json(resultMonument);
     }
 
     async function getMonuments(req: any, res: any) {
@@ -24,7 +25,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         const filterInner = QueryFilterFactory.setupFilter(filter);
         const monuments = await monumentsManager.getMonuments(filterInner, +limit, +skip);
 
-        res.json(monuments);
+        res.status(200).json(monuments);
     }
 
     async function commentMonument(req: any, res: any){
@@ -33,7 +34,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         const user = req.user;
         await monumentsManager.commentMonument(user._id, monumentId, commentText);
 
-        res.send("you commented a monument!");
+        res.status(200).send("you commented a monument!");
     }
 
     async function getComments(req: any, res: any){
@@ -41,7 +42,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         let { limit, skip } = req.query;
         const comments = await monumentsManager.getComments(monumentId, +limit, +skip);
 
-        res.json(comments);
+        res.status(200).json(comments);
     }
 
     async function likeMonument(req: any, res: any){
@@ -49,7 +50,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         const user = req.user;
         await monumentsManager.likeMonument(user._id, monumentId);
 
-        res.send("you liked a monument!");
+        res.status(200).send("you liked a monument!");
     }
 
     async function favourMonument(req: any, res: any){
@@ -57,7 +58,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         const user = req.user;
         await monumentsManager.favourMonument(user._id, monumentId);
 
-        res.send("you added a monument to favourites!");
+        res.status(200).send("you added a monument to favourites!");
     }
 
     async function getMonumentFavours(req: any, res: any){
@@ -65,26 +66,16 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         const user = req.user;
         const monuments = await monumentsManager.getMonumentFavours(user._id, +limit, +skip);
 
-        res.json(monuments);
-    }
-
-    function errorHandleWrapper(fn: Function){
-        return function (req: any, res: any) {
-            try {
-                fn(req, res);
-            } catch(err){
-                res.send("Something went wrong...")
-            }
-        }
+        res.status(200).json(monuments);
     }
 
     return {
-        getMonumentById: errorHandleWrapper(getMonumentById),
-        getMonuments: errorHandleWrapper(getMonuments),
-        commentMonument: errorHandleWrapper(commentMonument),
-        likeMonument: errorHandleWrapper(likeMonument),
-        getComments: errorHandleWrapper(getComments),
-        favourMonument: errorHandleWrapper(favourMonument),
-        getMonumentFavours: errorHandleWrapper(getMonumentFavours)
+        getMonumentById: requestErrorHandler(getMonumentById),
+        getMonuments: requestErrorHandler(getMonuments),
+        commentMonument: requestErrorHandler(commentMonument),
+        likeMonument: requestErrorHandler(likeMonument),
+        getComments: requestErrorHandler(getComments),
+        favourMonument: requestErrorHandler(favourMonument),
+        getMonumentFavours: requestErrorHandler(getMonumentFavours)
     }
 }
