@@ -5,14 +5,14 @@ import monumentsRouter from './src/routes/monumentsRoutes';
 import authRouter from './src/routes/authRoutes';
 import MongoService from "./src/services/MongoService";
 import { passportConfig } from './src/passport/passport';
+import { InfluxSerivce } from "./src/services/influxService"
+
 const morgan = require('morgan');
 const debug = require('debug')('app');
 const cookieParser = require('cookie-parser');
 const redis = require('redis');
 const session = require('express-session');
-import { initInflux } from "./src/services/influxService"
 
-initInflux()
 
 let RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient();
@@ -55,8 +55,10 @@ app.get('/', (req: any, res: any) => {
 const dbManager = new MongoService();
 
 passportConfig(app, dbManager);
+const influxService = new InfluxSerivce();
+influxService.testInflux()
 
-app.use("/monuments", monumentsRouter(dbManager, redisClient));
+app.use("/monuments", monumentsRouter(dbManager, redisClient, influxService));
 app.use("/auth", authRouter(dbManager));
 
 app.listen(port, () => {

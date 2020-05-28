@@ -2,11 +2,13 @@ import express from 'express';
 import monumentsController from '../controllers/monumentsController';
 import { DBReader, DBInput } from "../interfaces/interfaces";
 import profileController from "../controllers/profileController";
+import { InfluxSerivce } from "../services/influxService"
+
 const debug = require('debug')('app:monumentsRouter.ts');
 
 const monumentsRouter = express.Router();
 
-function router(dbManager: DBReader | DBInput, cacheClient: any){
+function router(dbManager: DBReader | DBInput, cacheClient: any, influxService: InfluxSerivce){
     const {
         getMonumentById,
         getMonuments,
@@ -25,7 +27,7 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
     });
 
     monumentsRouter.route('/')
-        .all((req, res, next) => {
+        .all(async (req: any, res: any, next) => {
             incrementRouteHit(cacheClient, 'monuments');
             next();
         })
@@ -35,7 +37,10 @@ function router(dbManager: DBReader | DBInput, cacheClient: any){
         .get( getMonumentFavours );
 
     monumentsRouter.route('/:id')
-        .all((req: any, res: any, next: any) => {
+        .all(async (req: any, res: any, next: any) => {
+            const { id: monumentId } = req.params;
+            const user = req?.user;
+            await influxService.writeMonumentVisit(1, monumentId, user?._id)
             incrementRouteHit(cacheClient, 'monument-id');
             next();
         })
