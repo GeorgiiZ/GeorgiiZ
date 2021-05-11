@@ -1,0 +1,50 @@
+{
+  "name": "monuments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "start": "set DEBUG=app, app:* & nodemon app.ts",
+    "test": "ts-node test.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.1",
+    "@types/node": "^13.7.1",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "chalk": "^3.0.0",
+    "connect-redis": "^4.0.4",
+    "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "influx": "^5.5.1",
+    "mongodb": "^3.5.3",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "redis": "^3.0.2",
+    "ts-md5": "^1.2.7"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      "node_modules/**/node_modules",
+      "assets",
+      "test.ts"
+    ],
+    "delay": "2500",
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": 4000
+    }
+  }
+}
