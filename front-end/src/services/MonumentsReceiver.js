@@ -2,12 +2,13 @@ import {Monument} from "@/models/Monument";
 
 export class MonumentsReceiver {
 
-  constructor(axios) {
+  constructor(axios, requestDispatcher) {
     this.axios = axios
+    this.requestDispatcher = requestDispatcher
   }
 
   async getMonuments (limit, skip, filter) {
-    const monumentsResponse = await this.axios(`/monuments?limit=${limit}&skip=${skip}&filter=${filter}`)
+    const monumentsResponse = await this.requestDispatcher.request(`/monuments?limit=${limit}&skip=${skip}&filter=${filter}`)
     const monuments = this.mapMonuments(monumentsResponse.data)
     return monuments
   }

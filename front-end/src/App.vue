@@ -1,23 +1,39 @@
 <template>
   <div class="root">
+    <loader v-show="requestCount" />
     <monuments-list />
   </div>
 </template>
 
 <script>
 import MonumentsList from "@/monuments-list/MonumentsList";
+import Loader from './loader/loader'
 
 export default {
   name: 'App',
   components: {
-    MonumentsList
+    MonumentsList,
+    Loader
+  },
+  data () {
+    return {
+      globalConfig: {}
+    }
+  },
+  computed: {
+    requestCount () {
+      return this.globalConfig.requestCount
+    }
   },
   mounted() {
+    this.globalConfig = this.$globalConfig
   }
 }
 </script>
 
 <style lang="sass">
+@import './icons.sass'
+
 $grey-light: #000000
 
 body

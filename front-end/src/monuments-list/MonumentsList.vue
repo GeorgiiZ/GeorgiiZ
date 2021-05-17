@@ -10,6 +10,10 @@
         <div class="monument__name">{{ monument.name }}</div>
       </div>
     </div>
+    <div class="monument__pagination">
+      <button class="monument__pagination-btn" @click="swapPrevPage">Назад<span class="monument__pagination-arrow"></span></button>
+      <button class="monument__pagination-btn" @click="swapNextPage">Вперед<span class="monument__pagination-arrow"></span></button>
+    </div>
   </div>
 </div>
 </template>
@@ -22,13 +26,27 @@ export default {
     return {
       monuments: [],
       pageNum: 1,
-      pageItemsAmt: 10
+      pageItemsAmt: 12
     }
   },
   mounted () {
     this.initMonuments()
   },
   methods : {
+    swapNextPage () {
+      this.incrPageNum()
+      this.initMonuments()
+    },
+    swapPrevPage () {
+      this.decrPageNum()
+      this.initMonuments()
+    },
+    decrPageNum () {
+      this.pageNum -= this.pageNum === 0 ? 0 : 1
+    },
+    incrPageNum () {
+      this.pageNum ++
+    },
     async initMonuments () {
       this.monuments = await this.monumentsReceiver.getMonuments(this.pageItemsAmt, this.pageItemsAmt * this.pageNum)
     }
@@ -54,6 +72,32 @@ $white: #FFFFFF
   &__name
     padding: 10px 0px
     min-height: 20px
+  &__pagination
+    flex-grow: 1
+    display: flex
+    frex-direction: column
+    justify-content: space-between
+    padding: 10px 0
+    &-btn
+      display: flex
+      padding: 10px
+      border: 1px solid black
+      border-radius: 10%
+      position: relative
+      &:active
+        opacity: 0.5
+    &__arrow
+      position: absolute
+      right: 0
+      height: 1px
+      width: 1px
+      padding-left: 5px
+      content: url('../assets/vector-icons/arrow.svg')
+      display: inline-block
+      transform: rotate(90deg)
+
+
+
 
 
 </style>
