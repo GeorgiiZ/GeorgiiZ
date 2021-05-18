@@ -15,11 +15,11 @@ export class MonumentsReceiver {
 
   mapMonuments (monumentsResponse) {
     return monumentsResponse.map(m => new Monument({
-      id: m.nativeId,
-      name: m.nativeName,
-      region: m.region,
-      photo: m.photo.url,
-      address: m.address
+      id: m?.nativeId,
+      name: m?.nativeName,
+      region: m?.region,
+      photo: m?.photo?.url,
+      address: m?.address
     }))
   }
 }

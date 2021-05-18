@@ -3,3 +3,53 @@
   width: 20px
   transform: rotate(90deg)
   background-image: url('./assets/vector-icons/arrow.svg') !important
+
+.btn-filter
+  content: url('./assets/vector-icons/filter.svg')
+  height: 20px
+
+.btn-map
+  content: url('./assets/map3.png')
+  height: 30px
+
+.input
+  outline: none
+  cursor: pointer
+  background: #FFFFFF
+  border: 1px solid #C1C9D4
+  box-sizing: border-box
+  box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.09)
+  border-radius: 2px
+  min-width: 0px
+  font-family: Font Awesome 5 Pro
+  font-style: normal
+  font-weight: normal
+
+.form
+  &__btn
+    margin-top: 12px
+    display: flex
+    justify-content: center
+    padding: 8px 16px
+    height: 32px
+    background: #885ACB
+    box-sizing: border-box
+    border-radius: 3px
+    color: #FFFFFF
+    font-size: 11px
+    line-height: 141.2%
+    text-transform: uppercase
+    &-reject
+      border: 1px solid rgba(108, 110, 128, 0.2)
+      background: #F6F4FF
+      color: #313948
+
+.btn-cross
+  width: 12px
+  height: 12px
+  &:before
+    position: absolute
+    content: url('./assets/vector-icons/bar-45.svg')
+  &:after
+    position: absolute
+    content: url('./assets/vector-icons/bar-135.svg')

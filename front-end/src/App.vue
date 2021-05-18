@@ -36,15 +36,19 @@ export default {
 
 $grey-light: #000000
 
-body
+html, body
   background: #F1F3F5
   margin: 0
+  width: 100%
+  height: 100%
 
 .root
-  height: 100%
+  flex-grow: 1
+  min-height: 100%
   width: 100%
   position: relative
   display: flex
+  flex-flow: column
   flex-direction: column
   background: #F1F3F5
   font-family: Rostelecom Basis
