@@ -1,6 +1,6 @@
 <template>
-  <div class="monuments">
-    <div v-if="!isFilterView">
+  <div class="monuments-container">
+    <div class="monuments" v-if="!isFilterView">
       <div class="monuments__header">
       <span
         class="btn-filter"
@@ -14,13 +14,15 @@
             class="input monuments__search-input">
         </div>
       </div>
-      <div v-for="monument in monuments" :key="monument.id"
-           class="monument">
-        <div>
-          <!--        <embed src="https://okn-mk.mkrf.ru/maps/show/id/131367" style="width:600px; height:500px;"/>-->
-          <!--        <iframe src="https://okn-mk.mkrf.ru/maps/show/id/131367" style="width:600px; height:500px;" frameborder="0"></iframe>-->
-          <!--        <img :src="'https://okn-mk.mkrf.ru/maps/show/id/131367'">-->
-          <div class="monument__name">{{ monument.name }}</div>
+      <div class="monuments__list">
+        <div v-for="monument in monuments" :key="monument.id"
+             class="monument">
+          <div>
+            <!--        <embed src="https://okn-mk.mkrf.ru/maps/show/id/131367" style="width:600px; height:500px;"/>-->
+            <!--        <iframe src="https://okn-mk.mkrf.ru/maps/show/id/131367" style="width:600px; height:500px;" frameborder="0"></iframe>-->
+            <!--        <img :src="'https://okn-mk.mkrf.ru/maps/show/id/131367'">-->
+            <div class="monument__name">{{ monument.name }}</div>
+          </div>
         </div>
       </div>
       <div class="monuments__pagination">
@@ -101,13 +103,19 @@ export default {
 <style lang="sass">
 $white: #FFFFFF
 
-.monuments
-  padding: 12px 8px 0px 8px
+.monuments-container
   background: #F1F3F5
   display: flex
   flex-direction: column
-  flex-grow: 1
   height: 100%
+  flex-grow: 1
+.monuments
+  display: flex
+  flex-direction: column
+  flex-grow: 1
+  padding: 12px 8px 0px 8px
+  &__list
+    flex-grow: 1
   &__search
     display: flex
     flex-grow: 1
