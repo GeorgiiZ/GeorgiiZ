@@ -16,7 +16,8 @@ function router(dbManager: DBReader | DBInput, cacheClient: any, influxService: 
         likeMonument,
         getComments,
         favourMonument,
-        getMonumentFavours
+        getMonumentFavours,
+        getGeographies
     } = monumentsController(dbManager);
 
     const { profileCheckAuthorized } = profileController(<DBInput>dbManager);
@@ -32,6 +33,13 @@ function router(dbManager: DBReader | DBInput, cacheClient: any, influxService: 
             next();
         })
         .get( getMonuments );
+
+    monumentsRouter.route('/geographies')
+      .all(async (req: any, res: any, next) => {
+          next();
+      })
+      .get( getGeographies );
+
 
     monumentsRouter.route('/favourites')
         .get( getMonumentFavours );

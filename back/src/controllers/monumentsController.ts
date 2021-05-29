@@ -28,6 +28,11 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         res.status(200).json(monuments);
     }
 
+    async function getGeographies(req: any, res: any) {
+        const geographies = await monumentsManager.getGeographies();
+        res.status(200).json(geographies);
+    }
+
     async function commentMonument(req: any, res: any){
         const { id: monumentId } = req.params;
         const  { text: commentText } = req.body;
@@ -76,6 +81,7 @@ export default function monumentsController(dbManager: DBReader | DBInput){
         likeMonument: requestErrorHandler(likeMonument),
         getComments: requestErrorHandler(getComments),
         favourMonument: requestErrorHandler(favourMonument),
-        getMonumentFavours: requestErrorHandler(getMonumentFavours)
+        getMonumentFavours: requestErrorHandler(getMonumentFavours),
+        getGeographies: requestErrorHandler(getGeographies)
     }
 }

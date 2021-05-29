@@ -89,6 +89,11 @@ export default class MonumentsManager{
         return monuments;
     }
 
+    async getGeographies (){
+        const geographies = await (<DBReader>this.dbManager).findMany('geographies', {},);
+        return geographies;
+    }
+
     private mapMonument(monument: any){
         const likesCount = this.getLikesCount(monument.likes);
         const resultMonument = Object.assign(monument, { likesCount });

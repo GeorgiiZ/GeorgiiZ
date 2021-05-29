@@ -5,7 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "start": "set DEBUG=app, app:* & nodemon app.ts",
-    "test": "ts-node test.ts"
+    "test": "ts-node test.ts",
+    "mongo-script": "ts-node mongo_scripts/georgaphics-extraction.ts"
   },
   "author": "",
   "license": "ISC",

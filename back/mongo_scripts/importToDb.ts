@@ -5,8 +5,8 @@ import path from 'path';
 
 const mongoManager = new MongoService();
 
-async function importData() {
-    for(let i = 1; i < 16; i++ ){
+async function importData () {
+    for(let i = 1; i < 16; i++ ) {
         const filePath = path.join(__dirname, `../assets/${ i }.json`);
         const textFileManager = new TextFileManager(filePath);
         await importMonuments(mongoManager, textFileManager);

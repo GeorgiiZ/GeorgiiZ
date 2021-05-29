@@ -37,7 +37,6 @@ import SelectionForm from './selection-form'
 export default {
   name: 'FilteringForm',
   components: { SelectionForm },
-  inject: ['configHandler'],
   props: {
     filters: Array,
     filterValues: Object

@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style lang="sass">
-@import './icons.sass'
+@import 'common-styles'
 
 $grey-light: #000000
 

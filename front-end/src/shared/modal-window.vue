@@ -46,8 +46,8 @@ export default {
     this.hideCheck = this.isToggleCheck
   },
   methods: {
-    // toggleCheckAppear (doHide) {
-    // },
+    toggleCheckAppear (doHide) {
+    },
     close () {
       this.$emit('modal-close')
     }

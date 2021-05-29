@@ -26,9 +26,9 @@
         </div>
       </div>
       <div class="monuments__pagination">
-        <button class="monuments__pagination-btn" @click="swapPrevPage">Назад<span class="monuments__pagination-arrow"></span></button>
+        <button class="btn-purple" @click="swapPrevPage">Назад<span class="monuments__pagination-arrow"></span></button>
         <span class="monuments__pagination-number">{{ pageNum }}</span>
-        <button class="monuments__pagination-btn" @click="swapNextPage">Вперед<span class="monuments__pagination-arrow"></span></button>
+        <button class="btn-purple" @click="swapNextPage">Вперед<span class="monuments__pagination-arrow"></span></button>
       </div>
     </div>
     <filtering-form
@@ -43,6 +43,7 @@
 
 <script>
 import FilteringForm from '../shared/filtering-form'
+import { FiltersBuilder } from '../services/filtering/FiltersBuilder'
 
 export default {
   name: "MonumentsList.vue",
@@ -53,6 +54,7 @@ export default {
   data () {
     return {
       monuments: [],
+      geographies: [],
       pageNum: 1,
       pageItemsAmt: 12,
       isFilterView: false,
@@ -60,12 +62,20 @@ export default {
       filterValues: {},
     }
   },
-  mounted () {
-    this.initMonuments()
+  async mounted () {
+    await this.initGeographies()
+    await this.initMonuments()
   },
   methods : {
+    async initGeographies () {
+      this.geographies = await this.monumentsReceiver.getGeographies()
+    },
     openFilter () {
       this.isFilterView = true
+      this.filters = new FiltersBuilder()
+        .setSubject([])
+        .buildGeographyFilter(this.geographies)
+        .getResult()
     },
     swapNextPage () {
       this.incrPageNum()
@@ -162,10 +172,14 @@ $white: #FFFFFF
       &:active
         opacity: 0.5
     &-number
-      border: 1px solid black
+      border: 1px solid white
+      background: #885ACB
       padding: 5px 10px
-      font-weight: normal
       font-size: 14px
+      color: #FFFFFF
+      text-transform: uppercase
+      font-style: normal
+      font-weight: 500
 .monument
   display: flex
   padding: 3px 8px

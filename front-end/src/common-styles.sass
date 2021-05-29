@@ -25,6 +25,17 @@
   font-style: normal
   font-weight: normal
 
+button, input[type="submit"], input[type="reset"]
+  background: none
+  color: inherit
+  border: none
+  padding: 0
+  font: inherit
+  cursor: pointer
+  outline: inherit
+  &:disabled
+    opacity: 0.5
+
 .form
   &__btn
     margin-top: 12px
@@ -53,3 +64,34 @@
   &:after
     position: absolute
     content: url('./assets/vector-icons/bar-135.svg')
+
+
+.radio-btn
+  flex-shrink: 0
+  display: flex
+  justify-content: center
+  align-items: center
+  background: #FFFFFF
+  border: 1px solid rgba(108, 110, 128, 0.5)
+  box-sizing: border-box
+  border-radius: 50%
+  width: 20px
+  height: 20px
+
+input[type="radio"]:checked + .radio-btn:after
+  content: ''
+  width: 12px
+  height: 12px
+  border-radius: 50%
+  background: #313948
+
+.btn-purple
+  background: #885ACB
+  border-radius: 3px
+  padding: 8px
+  color: #FFFFFF
+  text-transform: uppercase
+  font-style: normal
+  font-weight: 500
+  font-size: 11px
+  line-height: 141.2%

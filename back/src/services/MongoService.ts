@@ -65,7 +65,7 @@ export default class MongoService implements DBInput, DBReader{
 
     async findMany(
         collection: string,
-        filter:any,
+        filter:any = {},
         limit: number = 0,
         skip: number = 0,
         mapFunc: Function = this.defaultMap
