@@ -1,11 +1,11 @@
 <template>
   <div class="monuments-container">
-    <div class="monuments" v-if="!isFilterView">
+    <div class="monuments" v-if="isCurrentView">
       <div class="monuments__header">
       <span
         class="btn-filter"
         @click="openFilter" />
-        <span class="btn-map"/>
+        <span @click="openGeoMap" class="btn-map"/>
       </div>
       <div class="monuments__search-container">
         <div class="monuments__search">
@@ -16,25 +16,30 @@
       </div>
       <div class="monuments__list">
         <div v-for="monument in monuments" :key="monument.id"
-             class="monument">
+             class="monument"
+             @click="openMonument(monument)">
           <div>
-            <!--        <embed src="https://okn-mk.mkrf.ru/maps/show/id/131367" style="width:600px; height:500px;"/>-->
-            <!--        <iframe src="https://okn-mk.mkrf.ru/maps/show/id/131367" style="width:600px; height:500px;" frameborder="0"></iframe>-->
-            <!--        <img :src="'https://okn-mk.mkrf.ru/maps/show/id/131367'">-->
             <div class="monument__name">{{ monument.name }}</div>
           </div>
         </div>
       </div>
       <div class="monuments__pagination">
-        <button class="btn-purple" @click="swapPrevPage">Назад<span class="monuments__pagination-arrow"></span></button>
+        <button class="btn-purple" @click="swapPrevPage" :disabled="pageNum === 1">Назад<span class="monuments__pagination-arrow"></span></button>
         <span class="monuments__pagination-number">{{ pageNum }}</span>
-        <button class="btn-purple" @click="swapNextPage">Вперед<span class="monuments__pagination-arrow"></span></button>
+        <button class="btn-purple" @click="swapNextPage" :disabled="!monuments.length">Вперед<span class="monuments__pagination-arrow"></span></button>
       </div>
     </div>
+    <monument-page
+      v-if="isMonumentPage"
+      :monument="selectedMonument"
+      @returned="toCurrentView" />
+    <geo-map
+        v-if="isGeoMapView"
+        :apiFilterStr="apiFilterStr"
+        @returned="toCurrentView"/>
     <filtering-form
       v-if="isFilterView"
       :filters="filters"
-      :filter-values="filterValues"
       @returned="closeFilter"
       @submitted="filterOptions"
       @rejected="dropFilters" />
@@ -44,11 +49,16 @@
 <script>
 import FilteringForm from '../shared/filtering-form'
 import { FiltersBuilder } from '../services/filtering/FiltersBuilder'
+import MonumentPage from './monument-page'
+import GeoMap from "../geo-map/geo-map";
+import {compareFn} from "@/shared/utils";
 
 export default {
   name: "MonumentsList.vue",
   inject: ['monumentsReceiver'],
   components: {
+    GeoMap,
+    MonumentPage,
     FilteringForm
   },
   data () {
@@ -57,24 +67,47 @@ export default {
       geographies: [],
       pageNum: 1,
       pageItemsAmt: 12,
+      apiFilterStr: '',
       isFilterView: false,
+      isMonumentPage: false,
+      isGeoMapView: false,
       filters: [],
-      filterValues: {},
+      selectedMonument: {}
+    }
+  },
+  computed: {
+    isCurrentView () {
+      return !this.isFilterView && !this.isMonumentPage && !this.isGeoMapView
     }
   },
   async mounted () {
     await this.initGeographies()
     await this.initMonuments()
+    this.buildFilters()
   },
   methods : {
+    openGeoMap () {
+      this.isGeoMapView = true
+    },
+    toCurrentView () {
+      this.isFilterView = false
+      this.isMonumentPage = false
+      this.isGeoMapView = false
+    },
+    openMonument (monument) {
+      this.selectedMonument = monument
+      this.isMonumentPage = true
+    },
     async initGeographies () {
       this.geographies = await this.monumentsReceiver.getGeographies()
     },
     openFilter () {
       this.isFilterView = true
+    },
+    buildFilters () {
       this.filters = new FiltersBuilder()
         .setSubject([])
-        .buildGeographyFilter(this.geographies)
+        .buildGeographyFilter(this.geographies.sort((a, b) => compareFn(a.region, b.region)))
         .getResult()
     },
     swapNextPage () {
@@ -89,22 +122,23 @@ export default {
       this.pageNum -= this.pageNum === 1 ? 0 : 1
     },
     incrPageNum () {
-      this.pageNum ++
+      this.pageNum += this.monuments.length ? 1 : 0
     },
-    filterOptions (filterValues) {
-      this.filterValues = filterValues
-      // this.filteredOptions = launchFiltering(this.options, this.filters, filterValues)
-      this.closeFilter()
+    filterOptions () {
+      this.apiFilterStr = this.filters.reduce((acc, cur) => acc + '&' + cur.getAPIFilter(), '')
+      this.dropFilters()
+      this.initMonuments()
+      this.pageNum = 1
     },
     dropFilters () {
-      this.filterValues = {}
+      this.pageNum = 1
       this.closeFilter()
     },
     closeFilter () {
       this.isFilterView = false
     },
     async initMonuments () {
-      this.monuments = await this.monumentsReceiver.getMonuments(this.pageItemsAmt, this.pageItemsAmt * this.pageNum)
+      this.monuments = await this.monumentsReceiver.getMonuments(this.pageItemsAmt, this.pageItemsAmt * (this.pageNum - 1), this.apiFilterStr)
     }
   }
 }

@@ -1,36 +1,42 @@
 import {Monument} from "@/models/Monument";
 import {Geography} from "@/models/Geography";
+import {MonumentProperty} from "@/models/MonumentProperty";
 
 export class MonumentsReceiver {
 
-  constructor(axios, requestDispatcher) {
+  constructor(axios, requestDispatcher, monumentsMapper) {
     this.axios = axios
     this.requestDispatcher = requestDispatcher
+    this.monumentsMapper = monumentsMapper
   }
 
   async getGeographies () {
     const geographiesResponse = await this.requestDispatcher.request(`/monuments/geographies`)
-    const geographies = this.mapGeographies(geographiesResponse.data)
+    const geographies = this.monumentsMapper.mapGeographies(geographiesResponse.data)
     return geographies
   }
 
-  mapGeographies (geographiesResponse) {
-    return geographiesResponse.map(g => new Geography(g?.region?.value, g?.towns))
-  }
-
-  async getMonuments (limit, skip, filter) {
-    const monumentsResponse = await this.requestDispatcher.request(`/monuments?limit=${limit}&skip=${skip}&filter=${filter}`)
-    const monuments = this.mapMonuments(monumentsResponse.data)
+  async _getMonuments (limit, skip, filter) {
+    const monumentsResponse = await this.requestDispatcher.requestGet(`/monuments`, {
+      params: {
+        limit,
+        skip,
+        filter
+      }
+    })
+    const monuments = this.monumentsMapper.mapMonuments(monumentsResponse.data)
     return monuments
   }
 
-  mapMonuments (monumentsResponse) {
-    return monumentsResponse.map(m => new Monument({
-      id: m?.nativeId,
-      name: m?.nativeName,
-      region: m?.region,
-      photo: m?.photo?.url,
-      address: m?.address
-    }))
+  async getMonuments (limit = 0, skip = 0, filterStr = '') {
+    const monumentsResponse = await this.requestDispatcher.request(`/monuments?limit=${limit}&skip=${skip}&${filterStr}`)
+    const monuments = this.monumentsMapper.mapMonuments(monumentsResponse.data)
+    return monuments
+  }
+
+  async getMonument (id) {
+    const monumentResponse = await this.requestDispatcher.request(`/monuments/${id}`)
+    // const monument = this.mapMonuments(monumentsResponse.data)
+    return monumentResponse.data
   }
 }

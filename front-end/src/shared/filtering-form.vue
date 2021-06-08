@@ -7,16 +7,17 @@
         @click="close" />
     </div>
     <div class="option-filter__body">
-      <div v-for="filter in filters">
+      <div v-for="(filter, key) in filters" :key="key">
         <selection-form
           class="option-filter__item"
           :head-label="filter.name"
-          :values="filter.values"
-          :initial-value="filterValuesCur[filter.name]"
-          @submitted="value => addFilter(filter, value)">
-          <template #default="{ selectedValue }">
+          :values="['Все', ...filter.getValues()]"
+          :value-label-key="filter.getValueKey()"
+          :initial-value="filter.getSelectedValue()"
+          @submitted="value => setSelectedValue(filter, value)">
+          <template #default="{ selectedValueLabel }">
             <span class="option-filter__select-label">{{ filter.name }}</span>
-            <span class="option-filter__select">{{ selectedValue === 'Все' ? '' : selectedValue }}</span>
+            <span class="option-filter__select">{{ selectedValueLabel  === 'Все' ? '' : selectedValueLabel }}</span>
           </template>
         </selection-form>
       </div>
@@ -39,23 +40,22 @@ export default {
   components: { SelectionForm },
   props: {
     filters: Array,
-    filterValues: Object
   },
   data () {
     return {
-      filterValuesCur: {},
       hideCheck: false
     }
   },
-  created () {
-    this.filterValuesCur = { ...this.filterValues }
-  },
   methods: {
-    addFilter (filter, value) {
-      this.filterValuesCur[filter.name] = value
+    getValueLabel (selectedValue, valueKey) {
+      return valueKey ? value[this.valueLabelKey] : value
+    },
+    setSelectedValue (filter, value) {
+      const resultVal = value === 'Все' ? null : value
+      filter.setSelectedValue(resultVal)
     },
     submit () {
-      this.$emit('submitted', this.filterValuesCur)
+      this.$emit('submitted', this.filters)
     },
     reject () {
       this.$emit('rejected')

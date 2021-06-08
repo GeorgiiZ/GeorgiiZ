@@ -3,7 +3,7 @@
     <div
       class="selection-form__caller"
       @click="openSelector">
-      <slot :selected-value="savedValue" />
+      <slot :selected-value-label="getValueLabel(savedValue)" />
     </div>
     <modal-window
       :show-modal="showForm"

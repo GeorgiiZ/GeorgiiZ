@@ -1,4 +1,5 @@
-import {Filter} from "@/services/filtering/filters/Filter";
+import {FilterRegion} from "@/services/filtering/filters/FilterRegion";
+import {FilterTown} from "@/services/filtering/filters/FilterTown";
 
 export class FiltersBuilder {
   setSubject (filters) {
@@ -11,8 +12,9 @@ export class FiltersBuilder {
   }
 
   buildGeographyFilter (geographies) {
-    let regionFilter = new Filter('Регион', geographies.map(x => x.region))
-    this.filters.push(regionFilter)
+    let regionFilter = new FilterRegion('Регион', geographies)
+    let townFilter = new FilterTown('Город', regionFilter)
+    this.filters.push(regionFilter, townFilter)
     return this
   }
 }

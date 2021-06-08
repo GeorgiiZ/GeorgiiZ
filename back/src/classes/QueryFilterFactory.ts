@@ -5,7 +5,7 @@ const debug = require('debug')('app:QueryFilterFactory');
 class QueryFilterFactory{
 
     static setupFilter(filterRequest: any): Object | undefined {
-        if(!filterRequest){
+        if (!filterRequest) {
             return {}
         }
         let filter = {};

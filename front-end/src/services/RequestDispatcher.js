@@ -12,4 +12,13 @@ export class RequestDispatcher {
         return Promise.resolve(response)
       })
   }
+
+  requestGet (route, params) {
+    this.globalConfig.requestCount ++
+    return this.axios.get(route, params)
+      .then((response) => {
+        this.globalConfig.requestCount--
+        return Promise.resolve(response)
+      })
+  }
 }
