@@ -14,11 +14,10 @@
           v-for="(monument, key) in monuments" :key="key"
           :marker-id="key"
           :coords="getCoords(monument)"
-          cluster-name="1">
-        <template slot="balloon">
-          <span @click="monumentClicked(monument)">{{ monuments.name }}</span>
-        </template>
-      </ymap-marker>
+          :balloon="{header: monument.name}"
+          cluster-name="1"
+          @click="monumentClicked(monument)"
+      ></ymap-marker>
     </yandex-map>
   </div>
 </template>
@@ -28,7 +27,7 @@ import { yandexMap, ymapMarker } from 'vue-yandex-maps'
 
 import BtnReturn from '../shared/btn-return'
 import {Monument} from "@/models/Monument";
-
+const rusCenterCoords = [66.41747258078992, 94.25025752215694]
 export default {
   components: { yandexMap, ymapMarker, BtnReturn },
   inject: ['monumentsReceiver'],
@@ -56,7 +55,7 @@ export default {
   computed: {
     centerCoords () {
       if (!this.monuments?.[0]){
-        return [66.41747258078992, 94.25025752215694]
+        return rusCenterCoords
       }
       const coords = this.getCoords(this.monuments?.[0])
       return coords.map(c => (parseInt(c * 100)) / 100)

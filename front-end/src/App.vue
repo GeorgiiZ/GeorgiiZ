@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MonumentsList from "@/monuments-list/MonumentsList";
+import MonumentsList from "@/monuments-list/monument-list";
 import Loader from './loader/loader'
 
 export default {
