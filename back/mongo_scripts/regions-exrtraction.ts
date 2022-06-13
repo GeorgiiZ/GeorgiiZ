@@ -3,7 +3,7 @@ import MongoService from "../src/services/MongoService";
 const mongoManager = new MongoService();
 
 async function getRegions () {
-  let regions = await mongoManager.findMany('monuments', (x: any) => x.region)
+  let regions = await mongoManager.findMany('monuments'/*, (x: any) => x.region*/)
   return regions
 }
 
@@ -15,5 +15,5 @@ getRegions().then((regions) => {
 }).then((towns) => {
   return mongoManager.insertMany('towns',towns)
 }).then((res) => {
-  const w = 1
+  console.log("Loading regions finished!")
 })

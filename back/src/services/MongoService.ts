@@ -1,6 +1,8 @@
 import mongoConfig from "../db_config/mongoConfig";
-const { MongoClient } = require('mongodb');
+// @ts-ignore
+import { MongoClient } from "mongodb";
 import {DBInput, DBReader} from '../interfaces/interfaces';
+import {log} from "util";
 
 const debug = require('debug')('app:MongoService.ts');
 

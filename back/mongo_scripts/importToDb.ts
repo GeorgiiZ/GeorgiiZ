@@ -13,6 +13,6 @@ async function importData () {
     }
 }
 
-importData().then(() => console.log("Loading finished!"));
+importData().then(() => console.log("Loading monuments finished!"));
 
 

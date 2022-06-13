@@ -37,5 +37,5 @@ getGeographies().then((geographiesResponse: any) => {
   return mongoManager.insertMany('geographies', geographies)
 })
 .then((res) => {
-  const w = 1
+  console.log("Loading geographies finished!")
 })
