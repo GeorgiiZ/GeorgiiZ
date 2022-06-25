@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "start": "  nodemon app.ts",
+    "start": "set DEBUG=app, app:* & nodemon app.ts",
     "start-plain": "ts-node app.ts",
     "mongo-script": "ts-node mongo_scripts/importToDb.ts & ts-node mongo_scripts/georgaphics-extraction.ts & ts-node mongo_scripts/regions-exrtraction.ts"
   },
@@ -12,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^12.7.2",
+    "nodemon": "^2.0.18",
     "ts-node": "^8.10.2",
     "typescript": "^3.7.5"
   },
@@ -29,7 +30,6 @@
     "influx": "^5.5.1",
     "mongodb": "^4.7.0",
     "morgan": "^1.9.1",
-    "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "redis": "^3.0.2",
