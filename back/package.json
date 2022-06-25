@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "start": "set DEBUG=app, app:* & nodemon app.ts",
+    "start": "  nodemon app.ts",
     "start-plain": "ts-node app.ts",
     "mongo-script": "ts-node mongo_scripts/importToDb.ts & ts-node mongo_scripts/georgaphics-extraction.ts & ts-node mongo_scripts/regions-exrtraction.ts"
   },

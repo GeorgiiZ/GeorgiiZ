@@ -1,0 +1,19 @@
+version: "3"
+services:
+  mongo-db:
+    image: mongo
+    environment:
+  influx-db:
+    image: influxdb
+  redis-db:
+    image: redis
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+
+    depends_on:
+      - mongo-db
+      - influx-db
+      - redis-db
