@@ -1,11 +1,15 @@
-FROM node
+FROM node:14 as base
 
-RUN mkdir /app
+WORKDIR /home/node/app
 
-COPY dist/scripts /app
+COPY package*.json ./
 
-WORKDIR /app
+RUN npm i
 
-CMD node app.js
+COPY . .
 
-EXPOSE 4000
+FROM base as production
+
+ENV NODE_PATH=./build
+
+RUN npm run build
