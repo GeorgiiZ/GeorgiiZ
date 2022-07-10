@@ -37,7 +37,7 @@ const sessionMiddleware = session({
     },
 });
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4001;
 const app = express();
 
 app.use(morgan('tiny'));
