@@ -1,4 +1,4 @@
-import mongoConfig from "../db_config/mongoConfig";
+import mongoConfig from "../db_config/mongo-config.json";
 // @ts-ignore
 import { MongoClient } from "mongodb";
 import {DBInput, DBReader} from '../interfaces/interfaces';

@@ -15,9 +15,9 @@
     "resolveJsonModule": true,                 /* Include modules imported with '.json' extension */
   },
   "exclude": [
-    "node_modules",
-    "build",
-    "mongo_scripts",
+    "./node_modules/**",
+    "./build/**",
+    "./mongo_scripts/**",
     "./test.ts"
   ]
 }

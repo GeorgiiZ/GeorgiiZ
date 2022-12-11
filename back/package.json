@@ -33,20 +33,7 @@
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "redis": "^3.0.2",
+    "redis": "^4.2.0",
     "ts-md5": "^1.2.7"
-  },
-  "nodemonConfig": {
-    "restartable": "rs",
-    "ignore": [
-      "node_modules/**/node_modules",
-      "assets",
-      "test.ts"
-    ],
-    "delay": "2500",
-    "env": {
-      "NODE_ENV": "development",
-      "PORT": 4002
-    }
   }
 }

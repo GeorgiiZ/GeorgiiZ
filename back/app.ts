@@ -17,6 +17,8 @@ const session = require('express-session');
 let RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient();
 
+(async () => await redisClient.connect())();
+
 redisClient.on('connect', function() {
     console.log('Redis client connected');
 });
@@ -37,7 +39,7 @@ const sessionMiddleware = session({
     },
 });
 
-const port = process.env.PORT || 4001;
+const port = process.env.PORT || 4000;
 const app = express();
 
 app.use(morgan('tiny'));
