@@ -2,11 +2,11 @@
   "name": "monuments",
   "version": "1.0.0",
   "description": "",
-  "main": "app.ts",
+  "main": "src/app.ts",
   "scripts": {
     "build": "tsc -p .",
-    "start": "set DEBUG=app, app:* & nodemon app.ts",
-    "start-plain": "ts-node app.ts",
+    "start": "set DEBUG=app, app:* & nodemon src/app.ts",
+    "start-plain": "ts-node src/app.ts",
     "mongo-script": "ts-node mongo_scripts/importToDb.ts & ts-node mongo_scripts/georgaphics-extraction.ts & ts-node mongo_scripts/regions-exrtraction.ts"
   },
   "author": "",

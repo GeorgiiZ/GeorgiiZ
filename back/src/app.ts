@@ -1,11 +1,11 @@
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
-import monumentsRouter from './src/routes/monumentsRoutes';
-import authRouter from './src/routes/authRoutes';
-import MongoService from "./src/services/MongoService";
-import { passportConfig } from './src/passport/passport';
-import { InfluxSerivce } from "./src/services/influxService"
+import monumentsRouter from './routes/monumentsRoutes';
+import authRouter from './routes/authRoutes';
+import MongoService from "./services/MongoService";
+import { passportConfig } from './passport/passport';
+import { InfluxSerivce } from "./services/influxService"
 
 const morgan = require('morgan');
 const debug = require('debug')('app');
