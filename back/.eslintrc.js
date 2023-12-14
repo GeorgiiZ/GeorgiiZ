@@ -10,7 +10,18 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
-  rules: {},
+  rules: {
+    'prettier': [
+      'warn',
+      {
+        trailingComma: 'all',
+        tabWidth: 2,
+        semi: true,
+        singleQuote: true,
+        printWidth: 120,
+      },
+    ],
+  },
   env: {
     browser: true,
     es2021: true,
