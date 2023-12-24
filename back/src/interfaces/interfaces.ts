@@ -1,29 +1,25 @@
 interface DBInput {
-    insertMany(collection: string, items : Array<any>): Promise<void>;
+  insertMany(collection: string, items: Array<any>): Promise<void>;
 
-    insertOne(collection: string, item: any): Promise<any>;
+  insertOne(collection: string, item: any): Promise<any>;
 
-    pushToSet(collection: string, query: any, updatedFields: any): Promise<void>;
+  pushToSet(collection: string, query: any, updatedFields: any): Promise<void>;
 }
 
 interface DBReader {
-    findMany(
-        collection: string,
-        filter: Object | undefined,
-        limit?: number,
-        skip?: number,
-        mapFunc?: Function
-    ): Promise<any>;
+  findMany(
+    collection: string,
+    filter: Object | undefined,
+    limit?: number,
+    skip?: number,
+    mapFunc?: Function,
+  ): Promise<any>;
 
-    findOne(collection: string, filter: Object | undefined): Promise<any>;
+  findOne(collection: string, filter: Object | undefined): Promise<any>;
 }
 
 interface FileReader {
-    readMonuments(): Promise<Array<any>>;
+  readMonuments(): Promise<Array<any>>;
 }
 
-export {
-    DBInput,
-    FileReader,
-    DBReader
-}
+export { DBInput, FileReader, DBReader };
