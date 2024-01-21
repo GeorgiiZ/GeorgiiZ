@@ -7,7 +7,7 @@
     "build": "tsc -p .",
     "start": "set DEBUG=app, app:* & nodemon src/app.ts",
     "start-plain": "ts-node src/app.ts",
-    "mongo-script": "ts-node mongo_scripts/importToDb.ts & ts-node mongo_scripts/georgaphics-extraction.ts & ts-node mongo_scripts/regions-exrtraction.ts",
+    "mongo-script": "ts-node mongo_scripts/monuments-import.ts & ts-node mongo_scripts/georgaphics-extraction.ts & ts-node mongo_scripts/regions-exrtraction.ts",
     "test": "jest",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts src",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""

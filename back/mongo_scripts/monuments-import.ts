@@ -1,4 +1,4 @@
-import { importMonuments } from '../src/services/importToDbService';
+import { importMonuments } from './importToDbService';
 import TextFileManager from '../src/services/TextFileManager';
 import MongoService from '../src/services/MongoService';
 import path from 'path';

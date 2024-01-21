@@ -1,6 +1,5 @@
-import path from 'path';
-import { DBInput, FileReader } from '../interfaces/interfaces';
-import MonumentsMapping from '../services/MonumentsMapping';
+import { DBInput, FileReader } from '../src/interfaces/interfaces';
+import MonumentsMapping from '../src/services/MonumentsMapping';
 
 const debug = require('debug')('app:importFromFileController');
 

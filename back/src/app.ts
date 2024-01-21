@@ -6,6 +6,7 @@ import authRouter from './routes/authRoutes';
 import MongoService from './services/MongoService';
 import { passportConfig } from './passport/passport';
 import { InfluxSerivce } from './services/influxService';
+import { redisConfig } from './db_config/redis-config';
 
 const morgan = require('morgan');
 const debug = require('debug')('app');
@@ -14,9 +15,8 @@ const redis = require('redis');
 const session = require('express-session');
 
 const RedisStore = require('connect-redis')(session);
-const redisClient = redis.createClient()(
-  async () => await redisClient.connect(),
-)();
+const redisClient = redis.createClient(redisConfig);
+redisClient.connect()
 
 redisClient.on('connect', function () {
   console.log('Redis client connected');

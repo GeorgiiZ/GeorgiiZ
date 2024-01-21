@@ -1,0 +1,3 @@
+use monuments
+db.favourites.createIndex({"userId" : 1, "monumentId": 1 }, {"unique": true, "name": "favourites_uk1"})
+db.users.createIndex({"name" : 1}, {"unique": true, "name": "users_uk1"})

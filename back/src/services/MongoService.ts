@@ -1,4 +1,4 @@
-import mongoConfig from '../db_config/mongo-config.json';
+import { mongoConfig } from '../db_config/mongo-config';
 const MongoClient = require('mongodb').MongoClient;
 import { DBInput, DBReader } from '../interfaces/interfaces';
 
