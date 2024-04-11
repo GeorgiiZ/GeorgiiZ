@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     getValueLabel (selectedValue, valueKey) {
-      return valueKey ? value[this.valueLabelKey] : value
+      return valueKey ? selectedValue[this.valueLabelKey] : selectedValue
     },
     setSelectedValue (filter, value) {
       const resultVal = value === 'Все' ? null : value
