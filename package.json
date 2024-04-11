@@ -1,0 +1,22 @@
+{
+  "name": "monuments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorgiiZ/monuments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GeorgiiZ/monuments/issues"
+  },
+  "homepage": "https://github.com/GeorgiiZ/monuments#readme"
+}
