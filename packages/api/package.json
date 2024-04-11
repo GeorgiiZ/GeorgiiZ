@@ -1,6 +1,7 @@
 {
-  "name": "monuments-api",
+  "name": "@monuments/api",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "src/app.ts",
   "scripts": {

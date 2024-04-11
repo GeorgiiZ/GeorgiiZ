@@ -1,6 +1,6 @@
 const debug = require('debug')('app:AuthController');
 import { DBReader, DBInput } from '../interfaces/interfaces';
-import { Md5 } from 'ts-md5/dist/md5';
+import { Md5 } from 'ts-md5';
 import User from '../models/User';
 
 export default function profileController(dbManager: DBInput | DBReader) {
